@@ -1,0 +1,386 @@
+
+
+<lib-loading-spinner *ngIf="showSpinner"></lib-loading-spinner>
+<div >
+  <div class="card">
+    <div class="card-body">
+      <div class="flex">
+        <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+        </app-actionbutton>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="articSearch"
+            placeholder="Search for Description, code, contact" aria-label="Recipient's username"
+            aria-describedby="button-addon2" (keyup.enter)="search($event)">
+          <div class="input-group-append">
+            <!-- <button *ngIf="searclist" class="btn btn-outline-secondary" (click)="search($event)" style="pointer-events:visible;">Search
+              <i class="fa fa-search"></i></button> -->
+              <button *ngIf="returnList" class="btn btn-outline-secondary" (click)="limpiar()"
+              style="pointer-events:visible;" title="Return List">
+              Back to the List
+              <i class="fa fa-undo"></i></button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr class="titulosTabla">
+              <th>Freight Forwarder Name</th>
+              <th>{{'Address' | translate}}</th>
+              <th>{{'contact'|translate}}</th>
+              <th>{{'Phone'|translate}}</th>
+              <th>Emails</th>
+              <th>{{'Actions' | translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <h6 *ngIf="mostrar">Not Data found</h6>
+            <tr style="cursor: pointer; width:100%;" *ngFor="let item of citiessearch | paginate: { itemsPerPage: itemsPages, currentPage: pagination }" (dblclick)="editarFreight(item.idTransporte)">
+              <td>{{item.descripcion | titlecase }}</td>
+              <td><span>
+                <p> <b style="color: grey;">{{'Address' | translate}} 1:</b> {{item.direccion}}</p>
+                <p> <b style="color: grey;">{{'Address' | translate}} 2:</b> {{item.direccion2}}</p>
+              </span>
+            </td>
+            <td> {{item.contacto | titlecase}}</td>
+            <td> {{item.telefono | titlecase}}</td>
+            <td><span>
+              <p> <b style="color: grey;">Customer Service :</b> {{item.correoClienteServicio}}</p>
+              <p> <b style="color: grey;"> Operatons:</b> {{item.correoOperador}}</p>
+              <p> <b style="color: grey;"> Accounting:</b> {{item.correoContabilidad}}</p>
+            </span>
+          </td>
+              <td style="text-align: center">
+                <a (click)="editarFreight(item.idTransporte)">
+                  <i class="mdi mdi-table-edit"></i>
+                </a>
+                &nbsp;
+                <a (click)="borrar(item)">
+                  <i class="mdi mdi-delete-circle"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-sm-6">
+            <pagination-controls (pageChange)="pagination = $event"></pagination-controls>
+          </div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-7"></div>
+              <div class="col-sm-3"><h6>Items For Page</h6></div>
+              <div class="col-sm-2">
+                <select name="" id="" class="form-control" [(ngModel)]="itemsPages">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="75">75</option>
+                  <option value="100">100 </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{'Add Freight Forwader' | translate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">Freight Forwarder Name</label>
+            <input [(ngModel)]="descripcion" class="form-control" type="text" name="postCode" id="postCode" required>
+            <a *ngIf="!descripcion" class="validacion">
+              <i class="fa fa-info-circle"></i> Required field 
+            </a>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Address' | translate}} 1</label>
+            <input [(ngModel)]="calleuno" class="form-control" type="text" name="street1" id="street1" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Address' | translate}} 2</label>
+            <input [(ngModel)]="calledos" class="form-control" type="text" name="street" id="street" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">Enter Post Code, suburb or countrie</label>
+            <ng-select 
+            [isOpen]='open' 
+            [(ngModel)]="postCode" 	
+            (change)="infoCity(postCode)"
+            placeholder="Enter 3 or more characters"
+            [loading]="loading"
+            [virtualScroll]="true"
+            (scroll)="onScroll($event)"
+           (scrollToEnd)="onScrollToEnd()"
+           (keyup.enter)="customSearchFn($event)" >
+              <ng-option *ngFor="let item of codigoPostalBuffer" [value]="item.idCodigoPostal">
+               <div *ngIf="mostrarSelect">
+                {{item.codigo}} --
+                {{item.descripcion}} <br />
+                <small>{{ item?.ciudad | titlecase}} --
+                  {{ item?.pais | titlecase}}</small>
+               </div>
+               <div *ngIf="mostrarcodigo">
+                {{item.codigo}}
+               </div>
+              </ng-option>
+            </ng-select>
+            <a *ngIf="!postCode" class="validacion">
+              <i class="fa fa-info-circle"></i> Required field 
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Suburb</label>
+            <input type="text" class="form-control" [(ngModel)]="suburb" readonly>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">Enter City</label>
+            <div class="row">
+              <div class="col-sm-12">
+                <ng-select [items]="citieslist" bindLabel="descripcion"  bindValue="idCiudad" [(ngModel)]="nameCiudad"
+                (change)="infoCiudad(nameCiudad)">
+                  <ng-template ng-option-tmp let-item="item">
+                    {{item.descripcion}} <br />
+                    <small>{{item?.regionEstado}}</small>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">State</label>
+            <input class="form-control" type="text" name="state" id="state" [(ngModel)]="state" readonly>
+          </div>
+    
+          <div class="col-sm-6">
+            <label for="">{{'Country' | translate}}</label>
+            <input type="text" class="form-control" [(ngModel)]="countryName" readonly>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Contact' | translate}}</label>
+            <input [(ngModel)]="contac" class="form-control" type="text" name="contac" id="contac" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Phone' | translate}}</label>
+            <input [(ngModel)]="phone" class="form-control" type="text" name="phone" id="phone" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">Email Customer Service</label>
+            <input [(ngModel)]="emailCustomerService" class="form-control" type="email" name="emailCustomer"
+              id="emailCustomer" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref1="ngModel" required>
+              <div *ngIf="emailref1.errors &&(emailref1.touched || emailref1.dirty)" class ="aler alert-danger">
+                <div [hidden]="!emailref1.errors?.pattern">
+                  The email is not valid
+                </div> 
+               </div>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Email Operator</label>
+            <input [(ngModel)]="emailOperator" class="form-control" type="email" name="emailOperator" id="emailOperator"
+              required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref2="ngModel">
+              <div *ngIf="emailref2.errors &&(emailref2.touched || emailref2.dirty)" class ="aler alert-danger">
+                <div [hidden]="!emailref2.errors?.pattern">
+                  The email is not valid
+                </div> 
+               </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">Email Accounting</label>
+            <input [(ngModel)]="emailAccounting" class="form-control" type="email" name="emailAccounting"
+              id="emailAccounting" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref3="ngModel">
+          </div>
+        </div>
+        <div *ngIf="emailref3.errors &&(emailref2.touched || emailref3.dirty)" class ="aler alert-danger">
+          <div [hidden]="!emailref3.errors?.pattern">
+            The email is not valid
+          </div> 
+         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="SaveCity()">{{'Save' | translate}}</button>
+        <button type="button" class="btn btn-secondary"  data-dismiss="modal">{{'Close' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editMark" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{'Edit Freight Forwader' | translate}}</h5>
+        <button type="button" class="close" (click)="cancel()"  data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">Freight Forwarder Name</label>
+            <input [(ngModel)]="descripcion" class="form-control" type="text" name="postCode" id="postCode" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Address' | translate}} 1</label>
+            <input [(ngModel)]="calleuno" class="form-control" type="text" name="street1" id="street1" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Address' | translate}} 2</label>
+            <input [(ngModel)]="calledos" class="form-control" type="text" name="street" id="street" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">Enter Post Code, suburb or countrie</label>
+            <ng-select 
+            [isOpen]='open' 
+            [(ngModel)]="postCode" 	
+            (change)="infoCity(postCode)"
+            placeholder="Enter 3 or more characters"
+            [loading]="loading"
+            [virtualScroll]="true"
+            (scroll)="onScroll($event)"
+           (scrollToEnd)="onScrollToEnd()"
+           (keyup.enter)="customSearchFn($event)" >
+              <ng-option *ngFor="let item of codigoPostalBuffer" [value]="item.idCodigoPostal">
+               <div *ngIf="mostrarSelect">
+                {{item.codigo}} --
+                {{item.descripcion}} <br />
+                <small>{{ item?.ciudad | titlecase}} --
+                  {{ item?.pais | titlecase}}</small>
+               </div>
+               <div *ngIf="mostrarcodigo">
+                {{item.codigo}}
+               </div>
+              </ng-option>
+            </ng-select>
+            <a *ngIf="!postCode" class="validacion">
+              <i class="fa fa-info-circle"></i> Required field 
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Suburb</label>
+            <input type="text" class="form-control" [(ngModel)]="suburb" readonly>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">Enter City</label>
+            <div class="row">
+              <div class="col-sm-12">
+                <ng-select [items]="citieslist" bindLabel="descripcion"  bindValue="idCiudad" [(ngModel)]="nameCiudad"
+                (change)="infoCiudad(nameCiudad)">
+                  <ng-template ng-option-tmp let-item="item">
+                    {{item.descripcion}} <br />
+                    <small>{{item?.regionEstado}}</small>
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">State</label>
+            <input class="form-control" type="text" name="state" id="state" [(ngModel)]="state" readonly>
+          </div>
+    
+          <div class="col-sm-6">
+            <label for="">{{'Country' | translate}}</label>
+            <input type="text" class="form-control" [(ngModel)]="countryName" readonly>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Contact' | translate}}</label>
+            <input [(ngModel)]="contac" class="form-control" type="text" name="contac" id="contac" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Phone' | translate}}</label>
+            <input [(ngModel)]="phone" class="form-control" type="text" name="phone" id="phone" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">Email Customer Service</label>
+            <input [(ngModel)]="emailCustomerService" class="form-control" type="email" name="emailCustomer"
+              id="emailCustomer" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref1="ngModel" required>
+              <div *ngIf="emailref1.errors &&(emailref1.touched || emailref1.dirty)" class ="aler alert-danger">
+                <div [hidden]="!emailref1.errors?.pattern">
+                  The email is not valid
+                </div> 
+               </div>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Email Operator</label>
+            <input [(ngModel)]="emailOperator" class="form-control" type="email" name="emailOperator" id="emailOperator"
+              required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref2="ngModel">
+              <div *ngIf="emailref2.errors &&(emailref2.touched || emailref2.dirty)" class ="aler alert-danger">
+                <div [hidden]="!emailref2.errors?.pattern">
+                  The email is not valid
+                </div> 
+               </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">Email Accounting</label>
+            <input [(ngModel)]="emailAccounting" class="form-control" type="email" name="emailAccounting"
+              id="emailAccounting" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref3="ngModel">
+          </div>
+        </div>
+        <div *ngIf="emailref3.errors &&(emailref2.touched || emailref3.dirty)" class ="aler alert-danger">
+          <div [hidden]="!emailref3.errors?.pattern">
+            The email is not valid
+          </div> 
+         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="EditCity(id)">{{'Edit' | translate}}</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()"  data-dismiss="modal">{{'Close' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div> -->

@@ -1,0 +1,92 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="articSearch"
+            placeholder="Search for Description, code, contact" aria-label="Recipient's username"
+            aria-describedby="button-addon2" (keyup.enter)="search($event)">
+          <div class="input-group-append">
+            <!-- <button *ngIf="searclist" class="btn btn-outline-secondary" (click)="search($event)"
+              style="pointer-events:visible;">Search
+              <i class="fa fa-search"></i></button> -->
+            <button *ngIf="returnList" class="btn btn-outline-secondary" (click)="limpiar()"
+              style="pointer-events:visible;" title="Return List">
+              Back to the List
+              <i class="fa fa-undo"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr class="titulosTabla">
+            <th>{{'Code' | translate}}</th>
+            <th>{{'Description' | translate}}</th>
+            <th>{{'Contact' | translate}}</th>
+            <th>{{'Status' | translate}}</th>
+            <th>{{'Action' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <h6 *ngIf="mostrar">Not Data found</h6>
+          <tr style="cursor: pointer; width:100%;"
+            *ngFor="let item of bodegas | paginate: { itemsPerPage: itemsPages, currentPage: pagination }"
+            (dblclick)="editarWarehouse(item.idBodega)">
+            <td>{{item.codigo}}</td>
+            <td>{{item.descripcion | titlecase }}</td>
+            <td>{{item.contacto | titlecase }}</td>
+            <td *ngIf="item.estado == 1">
+              <a class="tag" style="background-color: #99c256; width: 55%; margin-left: auto; margin-right: auto; color: white;">ACTIVE</a>
+            </td>
+            <td *ngIf="item.estado == 0" class="tag"
+              style="background-color: #a94442; width: 55%; margin-left: auto; margin-right: auto;  color: white" >INACTIVE </td>
+            <td style="text-align:center;">
+              <a (click)="editarWarehouse(item.idBodega)">
+                <i class="mdi mdi-table-edit"></i>
+              </a>
+              &nbsp;
+              <a (click)="borrar(item)">
+                <i class="mdi mdi-delete-circle"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-sm-6">
+          <pagination-controls (pageChange)="pagination = $event"></pagination-controls>
+        </div>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-7"></div>
+            <div class="col-sm-3"><h6>Items For Page</h6></div>
+            <div class="col-sm-2">
+              <select name="" id="" class="form-control" [(ngModel)]="itemsPages">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="75">75</option>
+                <option value="100">100 </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

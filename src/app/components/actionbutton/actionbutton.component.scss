@@ -1,0 +1,56 @@
+.actionclass {
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .control-item {
+    display: block;
+  }
+
+  .right {
+    position: relative;
+    right: 0px;
+  }
+
+  a {
+    color: #79879a;
+  }
+
+  .actionsb {
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    padding: 0px 4px;
+  }
+
+  .cards {
+    margin: 0;
+    border: 0;
+  }
+
+  button {
+    background-color: #67757c24;
+    border: 0;
+    outline: 0;
+    color: #79879a;
+  }
+
+  button:disabled,
+  button[disabled] {
+    a {
+      color: rgba(143, 155, 179, 0.48);
+      text-decoration: none;
+      cursor: not-allowed;
+
+      i,
+      svg {
+        color: rgba(143, 155, 179, 0.48) !important;
+      }
+    }
+  }
+
+  .bg-head {
+    background-color: #ffffff;
+  }

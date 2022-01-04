@@ -1,0 +1,62 @@
+.titulosTabla {
+    background-color: #438eb9;
+    color: cornsilk;
+  }
+  
+  .modal-header {
+    background-color: #438eb9;
+  
+  }
+  
+  .modal-title {
+    color: aliceblue;
+  }
+
+  ::ng-deep .spinner {
+    height: calc(130vh - 34.3vh) !important;
+    position: inherit !important;
+    background: transparent url("../../../../../../../src/assets/images/ICONO-KARDEX.png") no-repeat center !important;
+  }
+  
+  tr th {
+    text-align: center;
+  }
+  
+  .flex {
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+  
+  
+  .tag {
+    display: flex !important;
+    justify-content: center !important;
+    padding: 5px;
+    font-size: 14px;
+    margin: 5px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #fff;
+  
+  }
+  
+  .card-body {
+    -ms-flex: 1 1 auto;
+    flex: 0 0 auto;
+    /* padding: 1.1rem; */
+    padding: 6px 12px 8px 17px;
+  }
+  
+  .validacion{
+     color:red !important;
+  }
+  
+  .caracter{
+    font-size: 13px;
+    font-style: oblique;
+    justify-content: left;
+    color: #79879acf;
+    text-align: left;
+  }
+  

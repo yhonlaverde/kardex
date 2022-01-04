@@ -1,0 +1,190 @@
+<div class="card">
+    <div class="card-body">
+      <div class="flex">
+        <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+        </app-actionbutton>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="articSearch"
+              placeholder="Search Enter Code or Description" aria-label="Recipient's username"
+              aria-describedby="button-addon2" (keyup.enter)="search($event)">
+            <div class="input-group-append">
+                <button *ngIf="returnList"  class="btn btn-outline-secondary" (click)="limpiar()" style="pointer-events:visible;" title="Return List">
+                  Back to the List
+                  <i class="fa fa-undo"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr class="titulosTabla">
+              <th>{{'Code' | translate}}</th>
+              <th>{{'Description' | translate}}</th>
+              <th>{{'Actions' | translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <h6 *ngIf="mostrar">Not Data found</h6>
+            <tr style="cursor: pointer; width:100%;" *ngFor="let item of subessearch | paginate: { itemsPerPage: itemsPages, currentPage: pagination }" (dblclick)="editar(item)">
+              <td>{{item.codigo}}</td>
+              <td>{{item.descripcion | titlecase }}</td>
+              <td style="text-align: center"><a (click)="editar(item)"><i class="mdi mdi-table-edit"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-sm-6">
+            <pagination-controls (pageChange)="pagination = $event"></pagination-controls>
+          </div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-7"></div>
+              <div class="col-sm-3"><h6>Items For Page</h6></div>
+              <div class="col-sm-2">
+                <select name="" id="" class="form-control" [(ngModel)]="itemsPages">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="75">75</option>
+                  <option value="100">100 </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">{{'Add Reason' | translate}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Code' | translate}}</label>
+              <input [(ngModel)]="code" class="form-control" type="text" name="code" id="code"  maxlength="30" required>
+              <div class="row" *ngIf="code">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3" class="caracter">  <span  class="caracter">{{code.length}}/30</span>
+                </div>
+            </div>
+  
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Description' | translate}}</label>
+              <input [(ngModel)]="descripcion" class="form-control" type="text" name="descripcion" maxlength="500" id="descripcion"
+                required>
+                <div class="row" *ngIf="descripcion">
+                  <div class="col-sm-9"></div>
+                  <div class="col-sm-3" class="caracter">  <span  class="caracter">{{descripcion.length}}/500</span>
+                  </div>
+              </div>
+  
+  
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Order' | translate}}</label>
+              <input [(ngModel)]="order" class="form-control" type="number" name="descripcion"  maxlength="200" id="descripcion"
+                required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Type Document' | translate}}</label>
+                <select name="" id="" class="form-control" [(ngModel)]="typeDocument">
+                    <option value="">-- Select Option -- </option>
+                    <option value="2">Receipts</option>
+                    <option value="6">Outputs</option>
+                    <option value="12">Reservation</option>
+                    <option value="7">Transfer Origin</option>
+                    <option value="10">Transfer Destination</option>
+                </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="SaveSub()">{{'Save' | translate}}</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="editMark" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">{{'Edit Reason' | translate}}</h5>
+          <button type="button" class="close" (click)="cancel()" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Code' | translate}}</label>
+              <input [(ngModel)]="code" class="form-control" type="text" name="code" id="code" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Description' | translate}}</label>
+              <input [(ngModel)]="descripcion" class="form-control" type="text" name="descripcion" id="descripcion"
+                required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Order' | translate}}</label>
+              <input [(ngModel)]="order" class="form-control" type="number" name="descripcion" id="descripcion"
+                required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Type Document' | translate}}</label>
+                <select name="" id="" class="form-control" [(ngModel)]="typeDocument">
+                    <option value="">-- Select Option -- </option>
+                    <option value="2">Receipts</option>
+                    <option value="6">Outputs</option>
+                    <option value="12">Reservation</option>
+                    <option value="7">Transfer Origin</option>
+                    <option value="10">Transfer Destination</option>
+                </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="EditSub(id)">{{'Edit' | translate}}</button>
+          <button type="button" class="btn btn-secondary"  (click)="cancel()" data-dismiss="modal">{{'Close' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,204 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="articSearch"
+            placeholder="Search for Description, code, contact" aria-label="Recipient's username"
+            aria-describedby="button-addon2" (keyup.enter)="search($event)">
+          <div class="input-group-append">
+            <!-- <button *ngIf="searclist" class="btn btn-outline-secondary" (click)="search($event)" style="pointer-events:visible;">Search
+              <i class="fa fa-search"></i></button> -->
+              <button *ngIf="returnList" class="btn btn-outline-secondary" (click)="limpiar()"
+              style="pointer-events:visible;" title="Return List">
+              Back to the List
+              <i class="fa fa-undo"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr class="titulosTabla">
+            <th>Code</th>
+            <th>Description</th>
+            <!-- <th>City</th> -->
+            <th>{{'Actions' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <h6 *ngIf="mostrar">Not Data found</h6>
+          <tr style="cursor: pointer; width:100%;"
+            *ngFor="let item of posCodeList | paginate: { itemsPerPage: itemsPages, currentPage: pagination }" (dblclick)="editar(item)">
+            <td>{{item?.codigo}}</td>
+            <td>{{item?.descripcion}}</td>
+            <!-- <td>{{item?.NombreCiudad}}</td> -->
+            <td style="text-align: center">
+              <a (click)="editar(item)">
+                <i class="mdi mdi-table-edit"></i>
+              </a>
+              &nbsp;
+              <a (click)="borrar(item)">
+                <i class="mdi mdi-delete-circle"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-sm-6">
+          <pagination-controls (pageChange)="pagination = $event"></pagination-controls>
+        </div>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-7"></div>
+            <div class="col-sm-3"><h6>Items For Page</h6></div>
+            <div class="col-sm-2">
+              <select name="" id="" class="form-control" [(ngModel)]="itemsPages">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="75">75</option>
+                <option value="100">100 </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{'Add PostCode' | translate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="postCode">
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Code' | translate}}</label>
+              <input class="form-control" type="text" id="codigo" formControlName="codigo"  [(ngModel)]="codigo" maxlength="30" required>
+              <div class="row" *ngIf="codigo">
+              <div class="col-sm-9"></div>
+              <div class="col-sm-3" class="caracter"> <span  class="caracter">{{codigo.length}}/30</span>
+              </div>
+          </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Description' | translate}}</label>
+              <input class="form-control" formControlName="descripcion" type="text" id="descripcion" [(ngModel)]="descripcion" maxlength="500" required>
+              <div class="row" *ngIf="descripcion">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3" class="caracter"> <span  class="caracter">{{descripcion.length}}/500</span>
+                </div>
+            </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <!-- <div class="col-sm-12">
+              <label for="">{{'Cities'}}</label>
+              <select  class="form-control" required formControlName="idCiudad">
+                <option [value]="option?.idCiudad" *ngFor="let option of citiessearch">
+                  {{ option?.descripcion }}
+                </option>
+              </select>
+            </div> -->
+
+            <div class="col-sm-12">
+              <label for="">Enter City</label>
+              <div class="row">
+                <div class="col-sm-12">
+                  <ng-select [items]="citiessearch" bindLabel="descripcion"  bindValue="idCiudad" [(ngModel)]="city"
+                   formControlName="idCiudad">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{item.descripcion}} <br />
+                      <small>{{item?.regionEstado}}</small>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" (click)="sendPostCode()" class="btn btn-primary">{{'Save' | translate}}</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editMark" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{'Edit PostCode' | translate}}</h5>
+        <button type="button" class="close"   (click)="cancel()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="postCode">
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Code' | translate}}</label>
+              <input class="form-control" type="text" id="codigo" formControlName="codigo" required  value={{infoEdit?.codigo}}>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">{{'Description' | translate}}</label>
+              <input class="form-control" formControlName="descripcion" type="text" id="descripcion" value={{infoEdit?.descripcion}} required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">Enter City</label>
+              <div class="row">
+                <div class="col-sm-12">
+                  <ng-select [items]="citiessearch" bindLabel="descripcion"  bindValue="idCiudad" [(ngModel)]="city"
+                   formControlName="idCiudad">
+                    <ng-template ng-option-tmp let-item="item">
+                      {{item.descripcion}} <br />
+                      <small>{{item?.regionEstado}}</small>
+                    </ng-template>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="EditCity(postCode)">{{'Edit' | translate}}</button>
+            <button type="button" class="btn btn-secondary"   (click)="cancel()" data-dismiss="modal">{{'Close' | translate}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

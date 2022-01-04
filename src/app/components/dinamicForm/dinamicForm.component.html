@@ -1,0 +1,78 @@
+<form *ngIf="dynamicForm" [formGroup]="dynamicForm" novalidate>
+  <div class="row">
+    <div *ngFor="let item of fields" [class]="class">
+      <div [ngSwitch]="item?.metaDato">
+        <div class="col-lg-6 mt-1" *ngSwitchCase="'TT'">
+          <div class="row">
+            <div class="col-lg-2">
+              <label class="label" for="input-Contexto">{{ item?.descripcion }}</label>
+              <label *ngIf="item?.esObligatorio">*</label>
+            </div>
+            <div class="col-lg-10">
+              <input required type="text" ngDefaultControl class="form-control"
+                (keypress)="activeChildrenControl(item?.id)" [id]="item?.id.toString()" [formControlName]="item?.id"
+                [(ngModel)]="item.valor" [readonly]="item?.configs?.disabled" [title]="item?.valor" />
+              <a *ngIf="item?.configs?.copy" class="copyStyle" id="copy" title="Copiar"
+                (click)="copyText(item?.valor)"><i class="far fa-copy"></i></a>
+            </div>
+          </div>
+        </div>
+       
+        <div class="col-lg-6 mt-1" *ngSwitchCase="'CBX'">
+          <div class="row">
+            <div class="col-lg-2">
+              <label class="label">{{ item?.descripcion }}</label>
+              <label *ngIf="item?.esObligatorio">*</label>
+            </div>
+            <div class="col-lg-6 ">
+              <!-- <label class="container">
+                          <input type="checkbox" [id]="item?.id.toString()" [formControlName]="item?.id"
+                            [(ngModel)]="item.valor" [disabled]="item?.configs?.disabled" checked="checked">
+                          <span class="checkmark"></span>
+                        </label> -->
+
+              <div class="nb-checkbox">
+                <label class="customised-control">
+                  <input class="customised-control-input" type="checkbox" [id]="item?.id.toString()"
+                    [formControlName]="item?.id" [(ngModel)]="item.valor" [readonly]="item?.configs?.disabled"
+                    checked="checked">
+                  <span class="customised-control-indicator"></span>
+                  <span class="customised-control-description"></span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 mt-1" *ngSwitchCase="'LT'">
+            <div class="row">
+              <div class="col-lg-2">
+                <label class="label">{{ item?.descripcion }}</label>
+                <label *ngIf="item?.esObligatorio">*</label>
+              </div>
+              <div class="col-lg-10">
+                <select ngDefaultControl class="form-control" (keypress)="activeChildrenControl(item?.id)"
+                  (onSelectionChange)="selectCliente(option, $event)" [id]="item?.id.toString()"
+                  [formControlName]="item?.id" [(ngModel)]="item.valor">
+                  <option [value]="option?.valor" *ngFor="let option of item?.options">{{ option?.valor }}</option>
+                </select>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mt-1" *ngSwitchCase="'TA'">
+            <div class="row">
+              <div class="col-lg-2">
+                <label class="label" for="input-Contexto">{{ item?.descripcion }}</label>
+                <label *ngIf="item?.esObligatorio">*</label>
+              </div>
+              <div class="col-lg-10">
+                <textarea required class="form-control" rows="6" cols="60" ngDefaultControl matInput
+                  (keypress)="activeChildrenControl(item?.id)" [id]="item?.id.toString()" [formControlName]="item?.id"
+                  [(ngModel)]="item.valor" [readonly]="item?.configs?.disabled"></textarea>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

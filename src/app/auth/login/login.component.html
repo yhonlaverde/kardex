@@ -1,0 +1,46 @@
+<body>
+
+  <div class="container">
+
+    <div class="gaussian-blur blur"></div>
+
+    <a (click)="goToDito()" class="logo">
+      <img [src]="env.assets+'/images/LOGO-KARDEX.png'" alt="Logo Kardex" />
+    </a>
+
+    <div class="formu">
+
+      <div class="forM">
+
+        <input type="text" [(ngModel)]="usuario" name="usuario" placeholder="User" id="cajas" required />
+
+        <!-- <a (click)="mostrar($event)">
+          <i class="icon-eye" id="show"></i>
+        </a> -->
+        
+        <i class="icon-eye" id="show" (mousedown)="showPassword = true" (mouseup)="showPassword = false"></i>
+
+        <!-- <input type="password" name="pass" id="pass" [(ngModel)]="contrasena" placeholder="Password" required
+          (keyup.enter)="login()" /> -->
+
+          <input #passwordInput [type]="showPassword ? 'text' : 'password'" name="pass" id="pass" placeholder="contraseña"
+          [(ngModel)]="contrasena" (keyup.enter)="login()" required />
+        <!-- <div class="alerta">
+            <app-alertnotificacion [tipo]="tipoNotificacionAlerta" [mensaje]="mensajeAlerta"> </app-alertnotificacion>
+          </div> -->
+
+        <div class="btn">
+          <input type="button" (click)="login()" value="LOGIN" id="btnfor" />
+        </div>
+
+      </div>
+
+      <section>
+        <a routerLink="/" routerLinkActive="active-link">Recover Password</a>
+      </section>
+
+
+    </div>
+
+  </div>
+</body>

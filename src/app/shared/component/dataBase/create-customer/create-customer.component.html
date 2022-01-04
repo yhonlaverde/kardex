@@ -1,0 +1,352 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <ngx-spinner bdColor = "rgba(255,254,254,0.98)" size = "medium" color = "rgba(6,84,233,0.99)" type = "ball-atom" [fullScreen] = "false"><p style="color: black" > 
+      Loading... </p>
+    </ngx-spinner>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <label for="">{{'Code' | translate}}</label>
+        <input [(ngModel)]="code" class="form-control" type="text" name="code" id="code" maxlength="30" required>
+        <div class="row" *ngIf="code">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{code.length}}/30</span>
+          </div>
+        </div>
+        <a *ngIf="!code" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a>
+      </div>
+      <div class="col-sm-6">
+        <label for="">ID</label>
+        <input [(ngModel)]="identificacion" class="form-control" type="text" name="identificacion" id="identificacion"
+          maxlength="30" required>
+        <div class="row" *ngIf="identificacion">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{identificacion.length}}/15</span>
+          </div>
+        </div>
+        <a *ngIf="!identificacion" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="">{{'Customer Name' | translate}}</label>
+            <input [(ngModel)]="name" class="form-control" type="text" name="name" id="name" maxlength="200" required>
+            <div class="row" *ngIf="name">
+              <div class="col-sm-9"></div>
+              <div class="col-sm-3" class="caracter"> <span class="caracter">{{name.length}}/200</span>
+              </div>
+            </div>
+            <a *ngIf="!name" class="validacion">
+              <i class="fa fa-info-circle"></i> Required field
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Sales Area</label>
+            <ng-select [items]="salesAreaList" bindLabel="descripcion" bindValue="idAreaVenta" [(ngModel)]="salesArea">
+            <ng-template ng-option-tmp let-item="item">
+              {{item.descripcion}} <br />
+              <small>{{item?.codigo}}</small>
+            </ng-template>
+          </ng-select>
+           
+          </div>
+        </div>
+      
+
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="">{{'Address' | translate}} 1</label>
+            <input [(ngModel)]="address" class="form-control" type="text" name="address" id="address" maxlength="200"
+              required>
+            <div class="row" *ngIf="address">
+              <div class="col-sm-9"></div>
+              <div class="col-sm-3" class="caracter"> <span class="caracter">{{address.length}}/200</span>
+              </div>
+            </div>
+            <a *ngIf="!address" class="validacion">
+              <i class="fa fa-info-circle"></i> Required field
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Address' | translate}} 2</label>
+            <input [(ngModel)]="address2" class="form-control" type="text" name="address" id="address" maxlength="200"
+              required>
+            <div class="row" *ngIf="address2">
+              <div class="col-sm-9"></div>
+              <div class="col-sm-3" class="caracter"> <span class="caracter">{{address2.length}}/200</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="">Enter Post Code, suburb or country</label>
+            <ng-select [isOpen]='open' [(ngModel)]="postCode" (change)="infoCity(postCode)"
+              placeholder="Enter 3 or more characters" [loading]="loading" [virtualScroll]="true"
+              (scroll)="onScroll($event)" (scrollToEnd)="onScrollToEnd()" (keyup.enter)="customSearchFn($event)">
+              <ng-option *ngFor="let item of codigoPostalBuffer" [value]="item.idCodigoPostal">
+                <div *ngIf="mostrarSelect">
+                  {{item.codigo}} --
+                  {{item.descripcion}} <br />
+                  <small>{{ item?.ciudad | titlecase}} --
+                    {{ item?.pais | titlecase}}</small>
+                </div>
+                <div *ngIf="mostrarcodigo">
+                  {{item.codigo}}
+                </div>
+              </ng-option>
+            </ng-select>
+            <a *ngIf="!postCode" class="validacion">
+              <i class="fa fa-info-circle"></i> Required field
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Suburb</label>
+            <input type="text" class="form-control" [(ngModel)]="suburb" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-12">
+            <label for="">Enter City</label>
+            <ng-select [items]="citieslist" bindLabel="descripcion" bindValue="idCiudad" [(ngModel)]="nameCiudad"
+              (change)="infoCiudad(nameCiudad)">
+              <ng-template ng-option-tmp let-item="item">
+                {{item.descripcion}} <br />
+                <small>{{item?.regionEstado}}</small>
+              </ng-template>
+            </ng-select>
+            <a *ngIf="!nameCiudad" class="validacion">
+              <i class="fa fa-info-circle"></i> Required field
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <label for="">State</label>
+        <input class="form-control" type="text" name="state" id="state" [(ngModel)]="state" readonly>
+      </div>
+      <div class="col-sm-6">
+        <label for="">{{'Country' | translate}}</label>
+        <input type="text" class="form-control" [(ngModel)]="countryName">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-4">
+        <label for="">{{'Contact' | translate}}</label>
+        <input [(ngModel)]="contact" class="form-control" type="text" name="contact" id="contact" maxlength="30"
+          required>
+        <div class="row" *ngIf="contact">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{contact.length}}/30</span>
+          </div>
+        </div>
+        <a *ngIf="!contact" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a>
+      </div>
+      <div class="col-sm-4">
+        <label for="">{{'Phone' | translate}}</label>
+        <input [(ngModel)]="phone" class="form-control" type="text" name="phone" id="phone" required maxlength="30">
+        <div class="row" *ngIf="phone">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{phone.length}}/30</span>
+          </div>
+        </div>
+        <a *ngIf="!phone" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a>
+      </div>
+      <div class="col-sm-4">
+        <label for="">{{'Status' | translate}}</label>
+        <select name="" id="" [(ngModel)]="estado" class="form-control" required>
+          <option value="1">ACTIVE</option>
+          <option value="0">INACTIVE</option>
+        </select>
+      </div>
+    </div>
+    <!-- Inicio Horario Laboral -->
+    <a id="add_field" (click)="addCampos()"><i class="fa fa-plus-square fa-2x"></i></a>
+    <div *ngFor="let item of horariosCliente; let i = index">
+      <div class="row mb-3">
+        <div class="col-sm-4">
+          <label for="">Opening Days</label>
+          <ng-select [items]="nameDays" [multiple]="true" bindLabel="name" groupBy="grupo" [selectableGroup]="true"
+            [selectableGroupAsModel]="false" [closeOnSelect]="false" bindValue="id" [(ngModel)]="item.diasApertura"
+            (change)="checkPush($event)">
+            <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="item-{{index}}" type="checkbox"
+                  [ngModel]="item$.selected">
+                <label class="form-check-label" style="color:#438eb9">{{item.grupo | uppercase}} </label>
+              </div>
+              <!-- <input class="form-control" id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" />  -->
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="item-{{index}}" type="checkbox"
+                  [ngModel]="item$.selected">
+                <label class="form-check-label" style="color:#438eb9">{{item.name | titlecase}} </label>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="col-sm-3">
+          <label for="">Opening Time</label><br>
+          <input [ngxTimepicker]="picker3" class="form-control" [(ngModel)]="item.horaApertura" [format]="24">
+          <ngx-material-timepicker #picker3></ngx-material-timepicker>
+        </div>
+        <div class="col-sm-3">
+          <label for="">Close Time</label><br>
+          <input [ngxTimepicker]="picker4" class="form-control" [(ngModel)]="item.horaCierre" [format]="24">
+          <ngx-material-timepicker #picker4 (timeSet)="validationHour($event)"></ngx-material-timepicker>
+        </div>
+        <div class="col-sm-2" *ngIf="item">
+          <label for="">Action</label><br>
+          <a (click)="cerrar(i)"><i class="fa fa-trash fa-2x"></i> </a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Fin Horario Trabajo -->
+
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <label for="">Special Instructions</label>
+        <input type="text" class="form-control" id="" [(ngModel)]="specialIntrutions" maxlength="200">
+        <div class="row" *ngIf="specialIntrutions">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{ specialIntrutions.length}}/200</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-4">
+        <label for="">Forklift On Site</label>
+        <select name="" id="" class="form-control" [(ngModel)]="forklitSite">
+          <option value="">--Select Option</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <label for="">Tailgate Required</label>
+        <select name="" id="" class="form-control" [(ngModel)]="tailgateRequiere">
+          <option value="">--Select Option</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+        <a *ngIf="!tailgateRequiere" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a>
+      </div>
+      <div class="col-sm-4">
+        <label for="">Hand Upload</label>
+        <select name="" id="" class="form-control" [(ngModel)]="handUpload">
+          <option value="">--Select Option</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-4">
+        <label for="">Freight Company Preferred</label>
+        <select class="form-control" required [(ngModel)]="freightCompany">
+          <option value="">--Select Option --</option>
+          <option [value]="option?.idTransporte" *ngFor="let option of freight">
+            {{ option?.descripcion }}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <label for="">Delivery Method Preferred</label>
+        <select name="" id="" class="form-control" [(ngModel)]="deliveryMethod">
+          <option value="">--Select Option</option>
+          <option value="Delivery">Delivery</option>
+          <option value="Pick Up">Pick Up</option>
+        </select>
+        <a *ngIf="!deliveryMethod" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a>
+      </div>
+      <div class="col-sm-4">
+        <label for="">Credit on hold</label>
+        <select name="" id="" class="form-control" [(ngModel)]="creditHold">
+          <option value="">--Select Option</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+        <a *ngIf="!creditHold" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <label for="">{{'Email' | translate}}</label> <a data-bs-toggle="tooltip" data-bs-placement="right" title="add multiple mails separated by commas 
+              ">
+          <i class="fa fa-info-circle"></i>
+        </a>
+
+        <input (change)="separateEmail($event)" class="form-control" [(ngModel)]="emailmultiple"
+          maxlength="500" type="email" name="email" id="email" required multiple>
+        <div class="row" *ngIf=" emailmultiple">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{ emailmultiple.length}}/500</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <label for="">Email Fin</label>
+        <input [(ngModel)]="email1" class="form-control" type="email" name="email1" id="email1" maxlength="500"
+          (change)="separateEmail($event)" ngModel #emailref="ngModel" required multiple>
+        <div class="row" *ngIf="email1">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{email1.length}}/500</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <label for="">{{'Requirements' | translate}}</label>
+        <textarea [(ngModel)]="observation" name="observation" id="observation" class="form-control"
+          maxlength="500"></textarea>
+        <div class="row" *ngIf="observation">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{observation.length}}/500</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>

@@ -1,0 +1,72 @@
+::ng-deep card-no-border .card {
+  border: 0px;
+  border-radius: 0px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  margin-bottom: 0px;
+}
+
+::ng-deep card-body {
+  flex: 1 1 auto;
+  min-height: 0px;
+  padding: 0.25rem;
+}
+
+.titulosTabla {
+  background-color: #438eb9;
+  color: cornsilk;
+}
+
+.modal-header {
+  background-color: #438eb9;
+
+}
+
+.modal-title {
+  color: aliceblue;
+}
+
+tr th {
+  text-align: center;
+}
+
+.tag {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 5px;
+  font-size: 14px;
+  margin: 5px;
+  line-height: 1.5;
+  border-radius: 3px;
+  color: #fff;
+
+}
+
+.ACTIVO {
+  background-color: #99c256;
+}
+
+.INACTIVO {
+  background-color: #a94442;
+  ;
+}
+
+.PENDIENTE,
+.REMISION,
+.BORRADOR,
+.Procesando {
+  background-color: #f59c03;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.card-body {
+  -ms-flex: 1 1 auto;
+  flex: 0 0 auto;
+  /* padding: 1.1rem; */
+  padding: 6px 12px 8px 17px;
+}

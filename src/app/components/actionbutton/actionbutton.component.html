@@ -1,0 +1,27 @@
+
+<div class="cards">    
+    <div class="p-0 bg-head"> 
+      <div class="actionsb" size="medium">
+  
+        <div class="actionsb" *ngFor="let item of actions" [disabled]="item?.disabled">
+  
+          <button class="btn btn-default" [disabled]="item?.disabled" (click)="LaunchAction(item)">
+            <a class="actionclass">
+              <i [class]="item.icon" style="
+                  font-size: 1.1rem;
+                  display: inline-block;
+                  vertical-align: middle;
+                  color: #79879a;
+                  margin-top: -4px;
+                "></i>
+              {{ item.description | translate }}</a>
+          </button>
+  
+        </div>
+      </div>
+    </div> 
+</div>
+  
+   
+
+  

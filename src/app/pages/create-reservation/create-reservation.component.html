@@ -1,0 +1,543 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <!-- <label for="">Document No.</label>
+        <input class="form-control" [(ngModel)]="documentNo" type="number" name="" id="" readonly> -->
+          <label for="">Document #:</label> &nbsp; &nbsp; <b>{{documentNo}}</b> 
+        
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3">
+            <div class="taggues" [class]="statusFormDo">
+              {{ statusFormDo}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row mb-2">
+      <div class="col-sm-6">
+        <label for="">Document No.</label>
+        <input class="form-control" [(ngModel)]="documentNo" type="number" name="" id="" readonly>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3">
+            <div class="taggues" [class]="statusFormDo">
+              {{ statusFormDo}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="row mb-2">
+      <div class="col-sm-6" *ngIf="supplierSelect">
+        <label for="">Supplier</label>
+        <ng-select [items]="supplierListSearch" bindLabel="nombre" bindValue="idProveedor" [(ngModel)]="supplier">
+          <ng-template ng-option-tmp let-item="item">
+            {{item.nombre}} <br />
+            <small>{{item.codigo}} -- {{item.identificacion}}</small>
+          </ng-template>
+        </ng-select>
+        <!-- <a *ngIf="!supplier" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a> -->
+      </div>
+      <div class="col-sm-6" *ngIf="customerSelect">
+        <label for="">Customer</label>
+        <ng-select [items]="clientListSearch" bindLabel="nombre" bindValue="idCliente" [(ngModel)]="customer">
+          <ng-template ng-option-tmp let-item="item">
+            {{item.nombre}} <br />
+            <small>{{item.codigo}} -- {{item.identificacion}}</small>
+          </ng-template>
+        </ng-select>
+        <!-- <a *ngIf="!customer" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a> -->
+      </div>
+      <div class="col-sm-6">
+        <label for="">Document Reference</label>
+        <input class="form-control" [(ngModel)]="documentRefere" maxlength="200" type="text" name="" id="">
+        <div class="row" *ngIf="documentRefere">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{documentRefere.length}}/200</span>
+          </div>
+        </div>
+        <!-- <a *ngIf="!documentRefere" class="validacion">
+          <a *ngIf="!idReserva">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </a> -->
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <label for="">Activity</label>
+        <input class="form-control" [(ngModel)]="activity" type="text" maxlength="200" name="" id="">
+        <div class="row" *ngIf="activity">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{activity.length}}/200</span>
+          </div>
+        </div>
+        <!-- <a *ngIf="!activity || !idReserva" class="validacion">
+          <a *ngIf="!idReserva">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </a> -->
+      </div>
+      <div class="col-sm-6">
+        <label for="">Reason</label>
+        <select class="form-control" name="" id="" [(ngModel)]="reason">
+          <option [value]="option?.idMotivo" *ngFor="let option of motivoList">
+            {{ option?.codigo }} -- {{ option?.descripcion }}
+          </option>
+        </select>
+        <!-- <a *ngIf="!reason" class="validacion">
+          <a *ngIf="!idReserva">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </a> -->
+      </div>
+
+    </div>
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <label for="">Observation</label>
+        <textarea [(ngModel)]="observation" name="" maxlength="500" id="" class="form-control"></textarea>
+        <div class="row" *ngIf="observation">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3" class="caracter"> <span class="caracter">{{observation.length}}/500</span>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="auditoria">
+        <div class="col-sm-6">
+          <label class="label">Creation date</label>
+          <div>Kardex </div>
+          <div>{{fechaCreacion}}</div>
+        </div>
+        <!-- <div class="col-sm-6" >
+          <label class="label">Modifier</label>
+          <div> {{ UsuarioModificacion | titlecase }} </div>
+          <div> {{ FechaModificacion }} </div>
+        </div> -->
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="card" >
+    <div class="accordion" id="accordionExample" data-default="1">
+      <div class="">
+        <div class="card-header collapsed" id="headingThree">
+          <h2 class="mb-0">
+            <div class="row" *ngIf="detalleAcordion == false">
+              <div class="col-sm-11">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                  data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Details
+                </button>
+              </div>
+              <div class="col-sm-1">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" (click)="filterProduct('salida')"
+                  data-toggle="collapse" style="background-color: #438eb9; color: white;" data-target="#collapseFour"
+                  aria-expanded="false" aria-controls="collapseFour">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="row" *ngIf="detalleAcordion == true">
+              <div class="col-sm-11">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                  data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Details
+                </button>
+              </div>
+              <div class="col-sm-1">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" (click)="filterProduct('reserEntra')"
+                  data-toggle="collapse" style="background-color: #438eb9; color: white;" data-target="#collapseFour"
+                  aria-expanded="false" aria-controls="collapseFour">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </h2>
+        </div>
+        <div id="collapseThree" class="collapse collapse show" aria-labelledby="headingThree"
+          data-parent="#accordionExample">
+          <div class="card">
+            <div class="">
+              <div class="table-responsive" *ngIf="tablaConItems">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr class="titulosTabla">
+                      <th *ngFor="let k of tableHeader">
+                        {{k}}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of valuedContador; let rowIndex = index;" (dblclick)="addDetalle(item)">
+
+                      <td contenteditable="false" style="width:227px;">
+                        <div class="double">
+                          <div class="updouble"><span> {{item?.item | titlecase}}</span></div>
+                        </div>
+                        </td>
+                      <td *ngIf="detalleAcordion == false">
+                        <div class="double">
+                          <div class="updouble"><span> {{item?.bodega | titlecase}} -
+                              {{item?.almacen | titlecase}}</span></div>
+                        </div>
+                      </td>
+                      <td style="width:37cm;" *ngIf="detalleAcordion == true">
+
+                        <select class="form-control" required  (change)="addDetalles(item, $event.target.value)" [(ngModel)]="item.StorageArea" (input)="onInputChangedStorage($event.target.value, rowIndex, 'StorageArea')">
+                          <option [value]="option?.idAlmacen" *ngFor="let option of reservarbodega">
+                            {{ option?.bodega }} - {{ option?.almacen }}
+                          </option>
+                        </select>
+                        
+                          
+                      </td>
+                      <td contenteditable="false" style="width: 53em;" *ngIf="detalleAcordion == true">
+                        <input class="form-control" type="text" name="" [(ngModel)]="item.lote" id="">
+                      </td>
+                      <td contenteditable="false" *ngIf="detalleAcordion == false">
+                       {{item.lote}}
+                      </td>
+                      <td contenteditable="false" style="width: 9cm; text-align: end;">
+                        <input class="form-control" type="number" [value]="item?.Quantity" name="" id=""
+                          (input)="onInputChanged($event.target.value, rowIndex, 'Quantity')" (change)="validar(item)">
+                      </td>
+                      <td style="width:100px; text-align: center;">{{item?.cantidad | number}}</td>
+                      <td style="width:100px; text-align: center;">{{item?.transito | number}}</td>
+                      <td style="width:100px; text-align: center;">{{item?.reserva | number}}</td>
+                      <td contenteditable="false" style="width:100px; text-align: end;">
+                        {{item.valorUnitario | currency }}
+                      </td>
+                      <td contenteditable="false" style="width:100px; text-align: end;">
+                        {{item.totalPrecio | currency}}
+                      </td>
+                      <td contenteditable="false" style="width:227px;">{{item?.origen | titlecase}}</td>
+                      <td style="text-align:center; width:227px;">
+                        
+                        <a title="Delete Detail" (click)="deleteArticulo(rowIndex)" style="cursor: pointer;">
+                          <i class="fa fa-trash"></i></a>
+                        &nbsp;
+                        <!-- <a *ngIf="!item.editable" title="Save Detail" (click)="validarItemsEditable(valuedContador)"  style="cursor: pointer;">
+                              <i class="fa fa-save"></i></a> -->
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+</div>
+
+
+
+
+<div class="modal fade" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width: 112%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Filter</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card" >
+          <div class="">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search ..." [(ngModel)]="articSearch"
+                    (change)="filter()">
+                  <div class="input-group-append">
+                    <!-- <button *ngIf="searclist" class="btn btn-outline-secondary" (click)="search($event)" style="pointer-events:visible;">Search
+                      <i class="fa fa-search"></i></button> -->
+                    <button *ngIf="Activartodos" class="btn btn-outline-secondary" (click)="fieldsTable()"
+                      style="pointer-events:visible; color: black" title="Return List">
+                      show all <i class="fa fa-eye"></i></button>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr class="titulosTabla">
+                <!-- <th *ngFor="let column of columns" scope="col" [hidden]="!column.show">{{column.name}}</th> -->
+                <th scope="col" style="font-weight: 300;" *ngIf='Warehouse'>Warehouse
+                  <a (click)="inactivar('Warehouse')">
+                    <i class="fa fa-eye-slash"></i>
+                  </a>
+
+                </th>
+                <!-- <th scope="col" style="font-weight: 300;">Origin <a ><i class="fa fa-eye-slash" *ngIf='!item.inputshow'></i></a></th> -->
+                <th scope="col" style="font-weight: 300;  width: 112px;" *ngIf='Name'>Name <a
+                    (click)="inactivar('Name')"><i class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 300; " *ngIf='Varietal'>Varietal <a ><i (click)="inactivar('Varietal')" class="fa fa-eye-slash" ></i></a></th>
+                <th scope="col" style="font-weight: 300;" *ngIf='Process'>Process <a ><i (click)="inactivar('Process')" class="fa fa-eye-slash" ></i></a></th>
+                <th scope="col" style="font-weight: 300;" *ngIf='Class'>Class <a (click)="inactivar('Class')"><i
+                      class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 300;" *ngIf='Lot'>Lot # <a (click)="inactivar('Lot')"><i
+                      class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 300;" *ngIf='Available'>Available <a
+                    (click)="inactivar('Available')"><i class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 300;" *ngIf='Transit'>Transit <a (click)="inactivar('Transit')"><i
+                      class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 300;" *ngIf='Reserved'>Reserved <a
+                    (click)="inactivar('Reserved')"><i class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 300;" *ngIf='Total'>Total <a (click)="inactivar('Total')"><i
+                      class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 300; text-align: center;">{{'Action' | translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of articles">
+                <td *ngIf='Warehouse'>
+                  <div class="double">
+                    <div class="updouble"><span> {{item?.bodega | titlecase}} - {{item?.almacen | titlecase}}</span>
+                    </div>
+                    <!-- <div class="subdouble"><span></span></div> -->
+                  </div>
+                </td>
+
+                <!-- <td>{{item?.origen | titlecase}}</td> -->
+                <td *ngIf='Name'>{{item?.item | titlecase}}</td>
+                <td *ngIf='Varietal'>{{item?.variedad | titlecase}}</td>
+                <td *ngIf='Process'>{{item?.proceso | titlecase}}</td>
+                <td *ngIf='Class'>{{item?.clasificacion | titlecase}}</td>
+                <td *ngIf='Lot'>{{item?.lote }}</td>
+                <td *ngIf='Available' style="text-align: center;">{{item?.cantidad | number}}</td>
+                <td *ngIf='Transit' style="text-align: center;">{{item?.transito | number}}</td>
+                <td *ngIf='Reserved' style="text-align: center;">{{item?.reserva | number}}</td>
+                <td *ngIf='Total' style="text-align: end;">{{item?.total | number}}</td>
+
+                <td style="text-align:center">
+
+                  <div class="nb-checkbox">
+                    <label class="customised-control">
+
+                      <input class="customised-control-input" type="checkbox" value="{{item.almacen}}"
+                        (change)="checkPush($event)">
+
+                      <span class="customised-control-indicator"></span>
+                      <span class="customised-control-description"></span>
+                    </label>
+                  </div>
+                  <!-- <a (click)="abrirArticulo(item)" title="Edit Article" style="cursor: pointer;">
+                          <i class="mdi mdi-table-edit"></i>
+                        </a><br>
+                        <a (click)="VerDetalle(item)" title="Detail Article" style="cursor: pointer;"><i class="mdi mdi-eye-outline"></i></a> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="AddProduct()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="filterReserv" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width: 112%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Filter</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search ..." [(ngModel)]="articSearch"
+                    (change)="filterReserv()">
+                  <div class="input-group-append">
+                    <!-- <button *ngIf="searclist" class="btn btn-outline-secondary" (click)="search($event)" style="pointer-events:visible;">Search
+                      <i class="fa fa-search"></i></button> -->
+                    <button *ngIf="Activartodos" class="btn btn-outline-secondary" (click)="activar()"
+                      style="pointer-events:visible; color: black" title="Return List">
+                      show all <i class="fa fa-eye"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              
+
+              <tr class="titulosTabla">
+
+                
+                <!-- <th *ngFor="let column of columns" scope="col" [hidden]="!column.show">{{column.name}}</th> -->
+                <th scope="col" style="font-weight: 270;" *ngIf='Warehouse'>Origin
+                  <a (click)="inactivar('Warehouse')">
+                    <i class="fa fa-eye-slash"></i>
+                  </a>
+
+                </th>
+                <!-- <th scope="col" style="font-weight: 270;">Origin <a ><i class="fa fa-eye-slash" *ngIf='!item.inputshow'></i></a></th> -->
+                <th scope="col" style="font-weight: 270;  width: 112px;" *ngIf='Name'>Name <a
+                    (click)="inactivar('Name')"><i class="fa fa-eye-slash"></i></a></th>
+                <!-- <th scope="col" style="font-weight: 270;">Varietal <a ><i class="fa fa-eye-slash" *ngIf='!item.inputshow'></i></a></th>
+                    <th scope="col" style="font-weight: 270;">Process <a ><i class="fa fa-eye-slash" *ngIf='!item.inputshow'></i></a></th> -->
+                <th scope="col" style="font-weight: 270;" *ngIf='Class'>Varietal <a (click)="inactivar('Class')"><i
+                      class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 270;" *ngIf='Lot'>Process <a (click)="inactivar('Lot')"><i
+                      class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 270;" *ngIf='Available'>Class <a
+                    (click)="inactivar('Available')"><i class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 270;" >Brand</th>
+                <th scope="col" style="font-weight: 270; text-align: center;">{{'Action' | translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let item of articles">
+                <td *ngIf='Warehouse'>{{item?.Origen | titlecase}}</td>
+                
+                <td *ngIf='Name'>
+                  <div class="double">
+                    <div class="updouble"><span> {{item?.item | titlecase}}</span>per
+                    </div>
+                    <!-- <div class="subdouble"><span></span></div> -->
+                  </div>
+                </td>
+                <td *ngIf='Class'>{{item?.Variedad | titlecase}}</td>
+                <td *ngIf='Lot'>{{item?.ProcesoItem | titlecase}}</td>
+                <td *ngIf='Available'>{{item?.classification | titlecase}}</td>
+                <td>
+                  {{item?.Marca | titlecase}}        
+                </td>
+                
+                <td style="text-align:center">
+
+                  <div class="nb-checkbox">
+                    <label class="customised-control">
+
+                      <input class="customised-control-input" type="checkbox" value="{{item.IdItem}}"
+                        (change)="checkPushReser($event)">
+
+                      <span class="customised-control-indicator"></span>
+                      <span class="customised-control-description"></span>
+                    </label>
+                  </div>
+                 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="AddProducts()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="campos" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Fields table</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+          <thead>
+            <!-- <tr>
+              <th></th>
+            </tr> -->
+          </thead>
+          <tbody>
+            <tr *ngFor="let day of CamposTabla | paginate: { itemsPerPage: itemsPagescampo, currentPage: paginationCampo} ">
+              <td>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="{{day.name}}" value="{{day.id}}"
+                    name="{{day.name}}" (change)="checkCampos($event)" [(ngModel)]="day.show">
+                  <label class="form-check-label" style="color:#438eb9"
+                    for="{{day.name}}">{{day.name | titlecase}}</label>
+                </div>
+              </td>
+              <!-- <td class="product_point" id="product_{{item.idAlmacen}}" >{{item.bodega}} - {{item.almacen}}</td> [(ngModel)]="day.status" (change)="checkPush($event)"-->
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-sm-8">
+            <pagination-controls (pageChange)="paginationCampo = $event"></pagination-controls>
+          </div>
+          <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-4">
+                <h5>Items Page</h5>
+              </div>
+              <div class="col-sm-5">
+                <select name="" id="" class="form-control" [(ngModel)]="itemsPagescampo">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="75">75</option>
+                  <option value="100">100 </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
+        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="activar()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>

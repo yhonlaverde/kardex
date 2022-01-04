@@ -1,0 +1,442 @@
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="card mb-3">
+      <div class="">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search Enter ..." aria-label="Recipient's username"
+                aria-describedby="button-addon2" [(ngModel)]="search" (change)="searchinto(search)">
+              <div class="input-group-append">
+                <button *ngIf="returnList" (click)="recuperar()" class="btn btn-outline-secondary"
+                  style="pointer-events:visible;" title="Return List">
+                  Back to the List
+                  <i class="fa fa-undo"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="example-action-buttons">
+      <button mat-button (click)="openAllPanels()">Expand All</button>
+      <button mat-button (click)="closeAllPanels()">Collapse All</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover" id="excel-table">
+        <thead>
+          <tr class="titulosTabla">
+            <th style="width:150px; font-weight: 400;" *ngFor="let column of CamposTabla" scope="col" [hidden]="!column.show">{{column.name | titlecase}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let padreitem of ArrayUnidos | paginate: { itemsPerPage: itemsPages, currentPage: pagination};">
+              <td colspan="9" style="width:150px">
+                <mat-accordion [multi]="true"
+                #accordion="matAccordion"
+                [displayMode]="flat">
+
+                <!-- (opened)="beforePanelOpened(padreitem)"
+                (closed)="beforePanelClosed(padreitem)" -->
+                  <mat-expansion-panel  
+                  [disabled]="padreitem.isDisabled"
+                  [expanded]="padreitem.isExpanded"
+                  (afterCollapse)="afterPanelClosed(padreitem)"
+                  (afterExpand)="afterPanelOpened(padreitemt)"
+                  #mapanel="matExpansionPanel">
+                    <mat-expansion-panel-header  >
+                      <mat-panel-title style="color: #847592; font-weight: 500;">
+                        {{padreitem.name | titlecase}}
+                      </mat-panel-title>
+                      <mat-panel-title ></mat-panel-title>
+                      
+                      <mat-panel-title > {{padreitem.totalAvailable | number}}</mat-panel-title>
+                      <mat-panel-title > {{padreitem.totalTransit | number}}</mat-panel-title>
+                      <mat-panel-title > {{padreitem.totalReserve | number}}</mat-panel-title>
+                      <mat-panel-title ></mat-panel-title>
+
+                      <mat-panel-description>
+                        {{padreitem.totales | number}}
+                        
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <table class="table table-hover">
+                      <thead>
+                        <tr style="visibility: collapse;">
+                          <th style="width:150px" *ngFor="let column of CamposTabla" scope="col" [hidden]="!column.show">{{column.name | titlecase}} </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr style="cursor: pointer; width: 100%" *ngFor="let itemDe of padreitem.hijos">
+                          <td   style="width:150px" *ngIf="padreitem?.showDistribution == '1'  || padreitem?.showDistribution == 'true' ">{{itemDe?.centroDistribucion | titlecase}}</td>                       
+                          <td   style="width:150px" *ngIf="padreitem?.showWarehouse == '1' || padreitem?.showWarehouse == 'true'">
+                            
+                            <div class="double">
+                              <div class="updouble"><span> {{itemDe?.almacen | titlecase}} - {{itemDe?.bodega | titlecase}}</span></div>
+                           
+                            </div>
+                          </td>
+                          <td  style="width:150px" *ngIf="padreitem.showClass == '1' || padreitem.showClass == 'true'">{{itemDe?.clasificacion | titlecase}}</td>
+                          <td  style="width:150px; text-align: end;" *ngIf="padreitem.showQuantity == '1' || padreitem.showQuantity == 'true'">{{itemDe?.cantidad | number}}</td>
+                          <td  style="width:150px; text-align: end;" *ngIf="padreitem?.showTransit == '1'  || padreitem?.showTransit == 'true'">{{itemDe?.transito | number}}</td>
+                          <td  style="width:150px; text-align: end;" *ngIf="padreitem?.showReserve == '1'  || padreitem?.showReserve == 'true'">{{itemDe?.reserva | number}}</td>
+                          <td  style="width:150px" *ngIf="padreitem?.showTime == '1' || padreitem?.showTime == 'true'">{{itemDe?.tiempo | titlecase}}</td>
+                          <td  style="width:150px" *ngIf="padreitem?.showSKU == '1' || padreitem?.showSKU == 'true'">{{itemDe?.sku}}</td>
+                          <td  style="width:150px; text-align: end;" *ngIf="padreitem?.showTotalCost == '1' || padreitem?.showTotalCost == 'true'">{{itemDe?.costoTotal | currency}}</td>
+                          <td  style="width:150px" *ngIf="padreitem?.showLot == '1' || padreitem?.showLot == 'true'">{{itemDe?.lote}}</td>
+                          <td  style="width:150px" *ngIf="padreitem?.showBrand == '1' || padreitem?.showBrand == 'true'">{{itemDe?.marca}}</td>
+                          <td  style="width:150px; text-align: end;" *ngIf="padreitem?.showTotalPrice == '1' || padreitem?.showTotalPrice == 'true'">{{itemDe?.precioTotal | currency}}</td>
+                          <td  style="width:150px; text-align: end;" *ngIf="padreitem.showUnitPrice == '1' || padreitem.showUnitPrice == 'true'">{{itemDe?.valorUnitario | currency}}</td>
+                          <td  style="width:150px; text-align: end;" *ngIf="padreitem?.showUnitValue == '1' || padreitem?.showUnitValue == 'true'">{{itemDe?.precioUnitario | currency}}</td>
+                          <td  style="width:150px; text-align: end;" *ngIf="padreitem?.showTotal == '1' || padreitem?.showTotal == 'true'">{{itemDe?.total | number}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-sm-6">
+          <pagination-controls (pageChange)="pagination = $event"></pagination-controls>
+        </div>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-7"></div>
+            <div class="col-sm-3">
+              <h6>Items For Page</h6>
+            </div>
+            <div class="col-sm-2">
+              <select name="" id="" class="form-control" [(ngModel)]="itemsPages">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="75">75</option>
+                <option value="100">100 </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between p-2">
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Filter</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="distribution-center" data-toggle="tab" href="#distribution" role="tab"
+              aria-controls="distribution" aria-selected="true"><i class="fa fa-cubes"></i> Distribution Center</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+              aria-selected="false"><i class="fa fa-cube"></i> Warehouse / Storage Area</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+              aria-selected="false"><i class="fa fa-flag"></i> Status</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="marca-tab" data-toggle="tab" href="#marca" (click)="cargarMarca()" role="tab" aria-controls="marca"
+              aria-selected="false"><i class="fa fa-registered"></i> Brand</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="clasifi-tab" data-toggle="tab" href="#clasifi" (click)="cargarClasificacion()" role="tab" aria-controls="clasifi"
+              aria-selected="false"><i class="fa fa-sitemap"></i> Class</a>
+          </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="">
+              <div class="">
+                <div class="">
+                  <table class="table table-hover">
+                    <thead>
+                      <!-- <tr>
+                        <th></th>
+                      </tr> -->
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let day of jerarquiaUser">
+                        <td>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="{{day.almacen}}"
+                              value="{{day.idAlmacen}}" name="{{day.almacen}}" (change)="checkPush($event)">
+                            <label class="form-check-label" style="color:#438eb9"
+                              for="{{day.almacen}}">{{day.bodega | titlecase}} -
+                              {{day.almacen | titlecase}}</label>
+                          </div>
+                        </td>
+                        <!-- <td class="product_point" id="product_{{item.idAlmacen}}" >{{item.bodega}} - {{item.almacen}}</td> [(ngModel)]="day.status" (change)="checkPush($event)"-->
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- <h6>Select: {{nameAlmacen}}</h6> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="">
+              <div class="">
+                <div class="">
+                  <table class="table table-hover">
+                    <thead>
+                      <!-- <tr>
+                        <th></th>
+                        <th></th>
+                      </tr> -->
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let day of estatusList">
+                        <td>
+                          <div class="form-check form-check-inline">
+                            <input checked class="form-check-input" type="checkbox" id="{{day.name}}" value="{{day.idStatus}}"
+                              name="{{day.name}}" (change)="checkPush($event)">
+                            <label class="form-check-label" style="color:#438eb9" for="{{day.name}}">
+                              {{day.name | titlecase}}</label>
+                          </div>
+                        </td>
+                        <!-- <td class="product_point" id="product_{{item.idAlmacen}}" >{{item.bodega}} - {{item.almacen}}</td> [(ngModel)]="day.status" (change)="checkPush($event)"-->
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- <h6>Select: {{nameEstado}}</h6> -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="tab-pane fade show active" id="distribution" role="tabpanel" aria-labelledby="distribution-center">
+            <div class="">
+              <div class="">
+                <div class="">
+                  <table class="table table-hover">
+                    <thead>
+                      <!-- <tr>
+                        <th></th>
+                        <th></th>
+                      </tr> -->
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let day of jerarquiaUser | groupBy:'centroDistribucion'">
+                        <td>
+                          <div class="form-check form-check-inline">
+                            <input  checked class="form-check-input" type="checkbox" id="{{day.key}}"
+                              value="{{day.key}}" name="{{day.key }}" (change)="checkPushdistribut($event)">
+                            <label class="form-check-label" style="color:#438eb9"
+                              for="{{day.key }}">{{day.key | titlecase}}</label>
+                          </div>
+                        </td>
+                        <!-- <td class="product_point" id="product_{{item.idAlmacen}}" >{{item.bodega}} - {{item.almacen}}</td> [(ngModel)]="day.status" (change)="checkPush($event)"-->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="tab-pane fade" id="marca" role="tabpanel" aria-labelledby="marca-tab">
+            <div class="">
+              <div class="">
+                <div class="">
+                  <table class="table table-hover">
+                    <thead>
+                      <!-- <tr>
+                        <th></th>
+                        <th></th>
+                      </tr> -->
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let day of Marca">
+                        <td>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="{{day.descripcion}}"
+                              value="{{day.idMarca}}" name="{{day.descripcion }}" (change)="checkPusBrand($event)">
+                            <label class="form-check-label" style="color:#438eb9"
+                              for="{{day.descripcion }}">{{day.descripcion | titlecase}}</label>
+                          </div>
+                        </td>
+                        <!-- <td class="product_point" id="product_{{item.idAlmacen}}" >{{item.bodega}} - {{item.almacen}}</td> [(ngModel)]="day.status" (change)="checkPush($event)"-->
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <pagination-controls (pageChange)="paginationBrand = $event"></pagination-controls>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-4">
+                          <h6>Items Page</h6>
+                        </div>
+                        <div class="col-sm-5">
+                          <select name="" id="" class="form-control" [(ngModel)]="itemsPagesBrand">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100 </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="tab-pane fade" id="clasifi" role="tabpanel" aria-labelledby="clasifi-tab">
+            <div class="">
+              <div class="">
+                <div class="">
+                  <table class="table table-hover">
+                    <thead>
+                      <!-- <tr>
+                        <th></th>
+                        <th></th>
+                      </tr> -->
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let day of Clasificacion | paginate: { itemsPerPage: itemsPagesClassifi, currentPage: paginationClassifi}">
+                        <td>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="{{day.descripcion}}"
+                              value="{{day.idClasificacion}}" name="{{day.descripcion }}" (change)="checkPusClassi($event)">
+                            <label class="form-check-label" style="color:#438eb9"
+                              for="{{day.descripcion }}">{{day.descripcion | titlecase}}</label>
+                          </div>
+                        </td>
+                        <!-- <td class="product_point" id="product_{{item.idAlmacen}}" >{{item.bodega}} - {{item.almacen}}</td> [(ngModel)]="day.status" (change)="checkPush($event)"-->
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <pagination-controls (pageChange)="paginationClassifi = $event"></pagination-controls>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-4">
+                          <h6>Items Page</h6>
+                        </div>
+                        <div class="col-sm-5">
+                          <select name="" id="" class="form-control" [(ngModel)]="itemsPagesClassifi">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="75">75</option>
+                            <option value="100">100 </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
+        <button type="button" class="btn btn-info" data-dismiss="modal" (click)="filtrar()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="campos" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Fields table</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+          <thead>
+            <!-- <tr>
+              <th></th>
+            </tr> -->
+          </thead>
+          <tbody>
+            <tr *ngFor="let day of CamposTabla | paginate: { itemsPerPage: itemsPagescampo, currentPage: paginationCampo} ">
+              <td>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="{{day.name}}" value="{{day.id}}"
+                    name="{{day.name}}" (change)="checkCampos($event)" [(ngModel)]="day.show">
+                  <label class="form-check-label" style="color:#438eb9"
+                    for="{{day.name}}">{{day.name | titlecase}}</label>
+                </div>
+              </td>
+              <!-- <td class="product_point" id="product_{{item.idAlmacen}}" >{{item.bodega}} - {{item.almacen}}</td> [(ngModel)]="day.status" (change)="checkPush($event)"-->
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-sm-8">
+            <pagination-controls (pageChange)="paginationCampo = $event"></pagination-controls>
+          </div>
+          <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-4">
+                <h6>Items Page</h6>
+              </div>
+              <div class="col-sm-5">
+                <select name="" id="" class="form-control" [(ngModel)]="itemsPagescampo">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="75">75</option>
+                  <option value="100">100 </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
+        <button type="button" class="btn btn-info" (click)="aplicarCampos()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>

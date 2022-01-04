@@ -1,0 +1,276 @@
+<div class="card">
+    <div class="card-body">
+      <div class="flex">
+        <app-actionbutton [actions]="action">
+        </app-actionbutton>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <label for="">Customer</label>
+          <input class="form-control" type="text" name="" id="">
+        </div>
+        <div class="col-sm-6">
+          <label for="">Reservation Date:</label>
+          <input class="form-control" type="date" name="" id="">
+        </div>
+        
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <label for="">Reservation Number</label>
+          <input class="form-control" type="text" name="" id="">
+        </div>
+     
+          <div class="col-sm-6">
+            <label for="">Measure View</label>
+            <input class="form-control" type="text" name="" id="">
+          </div>
+
+      </div>
+     
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <label for="">Weight</label>
+          <input class="form-control" type="text" name="" id="">
+        </div>
+     
+          <div class="col-sm-6">
+            <label for="">Unit</label>
+            <input class="form-control" type="text" name="" id="">
+          </div>
+ 
+      </div>
+    
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+          <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+              <div class="row">
+                <div class="col-sm-6">
+                  <button class="btn btn-link btn-block text-left collapsed" style="background-color: #438eb9; color: white;" type="button" data-toggle="collapse"
+                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Current Reservation
+                  </button>
+                </div>
+                <div class="col-sm-6">
+                  <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" style="background-color: #438eb9; color: white;"
+                    data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    New Reservation
+                  </button>
+                </div>
+              </div>
+            </h2>
+          </div>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead style="background-color: #438eb9; color: white;">
+                  <tr>
+                    <th scope="col">ID/SKU</th>
+                    <th scope="col">WHS</th>
+                    <th scope="col">Package(kg)</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Varietal</th>
+                    <th scope="col">Process</th>
+                    <th scope="col">Farm Name</th>
+                    <th scope="col">Avaible</th>
+                    <th scope="col">Reserved</th>
+                    <th scope="col">Shipment status</th>
+                    <th scope="col">Expiration Date</th>
+                    <th scope="col">Contract</th>
+                    <th scope="col">Comments</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+          <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="">Name</label>
+                  <input class="form-control" type="text" name="" id="">
+                </div>
+              </div>
+              <table class="table table-bordered" style="margin-top: 15px;">
+                <thead style="background-color: #438eb9; color: white;">
+                  <tr>
+                    <th scope="col">ID/SKU</th>
+                    <th scope="col">WHS</th>
+                    <th scope="col">Package(kg)</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Varietal</th>
+                    <th scope="col">Process</th>
+                    <th scope="col">Farm Name</th>
+                    <th scope="col">Avaible</th>
+                    <th scope="col">Reserved</th>
+                    <th scope="col">Shipment status</th>
+                    <th scope="col">Expiration Date</th>
+                    <th scope="col">Contract</th>
+                    <th scope="col">Comments</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>brand</td>
+                    <td>Otto</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Add Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label for="">Items</label>
+                        <select class="form-control" name="" id="">
+                          <option value="">-- Please select --</option>
+                          <option value="">AC0001 - LTDA</option>
+                          <option value="">AC0002 - CALLE</option>
+                          <option value="">AC0003 - AVIANCA</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-6">
+                        <label for="">warehouse</label>
+                        <select class="form-control" name="" id="">
+                          <option value="">-- Please select --</option>
+                          <option value="">BNAL - PRUEBA1</option>
+                          <option value="">BANL - PRUEBA2</option>
+                          <option value="">BANL - PRUEBA3</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label for="">Quantity</label>
+                         <input class="form-control" type="number" name="" id="">
+                      </div>
+                      <div class="col-sm-6">
+                        <label for="">Inventory</label>
+                        <input class="form-control" type="number" name="" id="">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label for="">Unit Value</label>
+                        <input class="form-control" type="number" name="" id="">
+                      </div>
+                      <div class="col-sm-6">
+                        <label for="">Total</label>
+                        <input class="form-control" type="number" name="" id="">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label for="">Expiration Date</label>
+                        <input class="form-control" type="date" name="" id="">
+                      </div>
+                      <div class="col-sm-6">
+                        <label for="">Position</label>
+                        <input class="form-control" type="number" name="" id="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  

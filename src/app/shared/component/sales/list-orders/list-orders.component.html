@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Order #</th>
+            <th scope="col">PO Customer #</th>
+            <th scope="col">WSH Origin</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Delivery Date</th>
+            <th scope="col">Delivery Method</th>
+            <th scope="col">Freiht Company</th>
+            <th scope="col">Order Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listProduct" id="id" (click)="SelectionClick(item)" style="cursor: pointer; width:100%;">
+            <td>{{item.Order}}</td>
+            <td>{{item.POCustomer}}</td>
+            <td>{{item.WSHOrigin}}</td>
+            <td>{{item.Customer}}</td>
+            <td>{{item.OrderDate}}</td>
+            <td>{{item.DeliveryDate}}</td>
+            <td>{{item.DeliveryMethod}}</td>
+            <td>{{item.FreihtCompany}}</td>
+            <td>{{item.OrderStatus}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

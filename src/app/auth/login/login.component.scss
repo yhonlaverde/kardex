@@ -1,0 +1,216 @@
+@import '../../../theme/variables.scss';
+
+body {
+  margin: 0;
+  padding: 0;
+  background: url(../../../assets/images/background/login-register.jpg) no-repeat fixed 10% center;
+  background-size: cover;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  min-height: 100vh;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat", sans-serif;
+}
+
+@media (max-width: 600px) {
+  body {
+    background: url(../../../assets/images/bgmin.jpg) no-repeat fixed center;
+    background-size: cover;
+  }
+}
+
+.configuration-icon {
+  cursor: pointer;
+  bottom: 15px;
+  position: absolute;
+  right: 15px;
+  color: white;
+}
+
+.icon-eye {
+  cursor: pointer;
+}
+
+.container {
+  max-width: 450px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+  margin: auto;
+  background: -webkit-gradient(linear,
+      left top,
+      left bottom,
+      from(rgba(127, 127, 127, 5.36)),
+      to(rgba(127, 127, 127, 0.76)));
+  background: -webkit-linear-gradient(top,
+      rgba(127, 127, 127, 0.56),
+      rgba(127, 127, 127, 0.76));
+  background: -o-linear-gradient(top,
+      rgba(127, 127, 127, 0.56),
+      rgba(127, 127, 127, 0.76));
+  background: linear-gradient(to bottom,
+      rgba(127, 127, 127, 0.56),
+      rgba(127, 127, 127, 0.76));
+  padding: 1em;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+
+.logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  & img {
+    width: 75%;
+  }
+}
+
+.container>.formu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: relative;
+  margin: auto;
+}
+
+.container>.formu>.forM {
+  position: relative;
+  max-width: 380px;
+  width: 100%;
+  margin: auto;
+}
+
+.container>.formu>.forM>input {
+  width: 95%;
+  margin: 10px;
+  padding: 0.5em;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+  position: relative;
+  background: rgba(239, 240, 244, 0.38);
+}
+
+.container>.formu>.forM>.btn {
+  width: 95%;
+  margin: 10px;
+  outline: none;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.alerta {
+  width: 95%;
+  margin: 10px;
+  outline: none;
+  position: relative;
+
+}
+
+.container>.formu>.forM>.btn>input {
+  cursor: pointer;
+  width: 100%;
+  height: 33px;
+  background: $color-primary;
+  border: none;
+  color: #fff;
+  font-weight: 100;
+  border-radius: 5px;
+  outline: none;
+  font-size: 70%;
+}
+
+.container>.formu>.forM>#cajas,
+.container>.formu>.forM #pass {
+  margin: 10px;
+  border-radius: 5px;
+  border: none;
+  color: #000;
+  position: relative;
+}
+
+.container>.formu>section {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.container>.formu>section>a {
+  color: rgba(255, 255, 255, 0.59) !important;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.container>.formu>section>.ld {
+  color: #96999c;
+}
+
+span {
+  color: #666;
+
+  &>p {
+    margin-top: 12.5px;
+    margin-bottom: 12.5px;
+    margin-left: 1.5rem;
+    color: rgba(255, 255, 255, 0.89);
+    font-size: 12.5px;
+    font-weight: 300;
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    margin: 0 20px;
+  }
+}
+
+input::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.88);
+  font-family: "Montserrat", sans-serif;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+input:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.88);
+  font-family: "Montserrat", sans-serif;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+input:-ms-input-placeholder {
+  color: #fff;
+}
+
+#show {
+  position: absolute;
+  width: 13.97px;
+  height: 8.2px;
+  right: 15px;
+  background: url(../../../assets/images/oj.png) no-repeat;
+  z-index: 9000;
+  top: 76px;
+}

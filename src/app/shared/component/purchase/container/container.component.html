@@ -1,0 +1,334 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <!-- <label for="">Document No.</label>
+        <input class="form-control" [(ngModel)]="documentNo" type="number" name="" id="" readonly> -->
+          <label for="">Document No:</label> &nbsp; &nbsp; <b>{{documentNo}}</b> 
+        
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3">
+            <div class="taggues" [class]="statusFormDo">
+              {{ statusFormDo}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-4">
+        <label for="">Cofinet Container #</label>
+        <input class="form-control" type="text" name="" id="" [(ngModel)]="contenedorCofinet">
+      </div>
+      <div class="col-sm-4">
+        <label for="">Contract #</label>
+        <input class="form-control" type="text" name="" id="" [(ngModel)]="contrato">
+      </div>
+      <div class="col-sm-4">
+        <label for="">Container #</label>
+        <input class="form-control" type="text" name="" id="" [(ngModel)]="contenedor">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-4">
+        <label for="">Supplier</label>
+        <ng-select [items]="supplierListSearch" bindLabel="nombre" bindValue="idProveedor" [(ngModel)]="idProveedor">
+          <ng-template ng-option-tmp let-item="item">
+            {{item.nombre}} <br />
+            <small>{{item.codigo}} -- {{item.identificacion}}</small>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-sm-4">
+        <label for="">Departure Date</label>
+        <input class="form-control" type="date" name="" id="" [(ngModel)]="fechaSalida">
+      </div>
+      <div class="col-sm-4">
+        <label for="">Arrival Date</label>
+        <input class="form-control" type="date" name="" id="" [(ngModel)]="fechaLlegada">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-4">
+        <label for="">Departure Port</label>
+        <select name="" id="" class="form-control" [(ngModel)]="idPuertoOrigen">
+          <option [value]="item.idPuerto" *ngFor="let item of origenPuerto">{{item.descripcion}}</option>
+        </select>
+      
+      </div>
+      <div class="col-sm-4">
+        <label for="">Destination Port</label>
+
+        <select name="" id="" class="form-control" [(ngModel)]="idPuertoDestino">
+          <option [value]="item.idPuerto" *ngFor="let item of destinationPuerto">{{item.descripcion}}</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <label for="">Quarantine</label>
+        <input class="form-control" type="text" name="" id="" [(ngModel)]="cuarentena">
+      </div>
+      <!-- <div class="col-sm-4">
+        <label for="">Destination WSH</label>
+        <input class="form-control" type="text" name="" id="" [(ngModel)]="observacion">
+      </div> -->
+    </div>
+  
+    <div class="row mb-3">
+      <div class="col-sm-3">
+        <label for="">Documents</label>
+        <div class="fileupload fileupload-new" data-provides="fileupload">
+          <span class="btn btn-default btn-file"><span class="fileupload-new"><i class="mdi mdi-upload"></i></span>
+            <span class="fileupload-exists">Change</span><input [(ngModel)]="documentos" type="file" multiple
+              (change)="imgAccordion($event)" /></span>
+          <span class="fileupload-preview" style=" padding-left: 25px;">
+
+            <img [src]="imagen" width="100" height="auto" alt="">
+            <ul style="padding-left: 108px;  margin-top: -13px;">
+              <li *ngFor="let file of selectedFiles; let i = index">
+                <!-- <a href="#">{{file.name}}</a> -->
+                <a href="{{file.name}}" download="{{file.name}}">{{file.name}}</a>
+                <!-- <i class="mdi mdi-delete" (click)="deleteFile(i)">delete</i> -->
+              </li>
+            </ul>
+          </span>
+          <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="">Inspection Date</label>
+        <input class="form-control" type="date" name="" id="" [(ngModel)]="fechaInspeccio">
+      </div>
+      <div class="col-sm-3">
+        <label for="">Border Holds</label>
+        <select class="form-control" name="" id="" [(ngModel)]="retencionesFrontera">
+          <option value="">-- Seleccione --</option>
+          <option value="Yes">Yes</option>
+          <option value="Relesead">Relesead</option>
+        </select>
+      </div>
+      <div class="col-sm-3">
+        <label for="">Gross Weight</label>
+        <input class="form-control" type="text" name="" id="" [(ngModel)]="pesoBruto" disabled>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div>
+    <div class="accordion" id="accordionExample" data-default="1">
+      <div class="">
+        <div class="card-header collapsed" id="headingThree">
+          <h2 class="mb-0">
+            <div class="row">
+              <div class="col-sm-11">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                  data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Details
+                </button>
+              </div>
+              <div class="col-sm-1">
+                <button class="btn btn-link btn-block text-left collapsed" type="button" (click)="filterProduct()"
+                  data-toggle="collapse" style="background-color: #438eb9; color: white;" data-target="#collapseFour"
+                  aria-expanded="false" aria-controls="collapseFour">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </h2>
+        </div>
+        <div id="collapseThree" class="collapse collapse show" aria-labelledby="headingThree"
+          data-parent="#accordionExample">
+          <div class="card">
+            <div class="">
+              <div class="table-responsive" *ngIf="tablaConItems">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr class="titulosTabla">
+                      <th *ngFor="let k of tableHeader" >
+                        {{k}}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of detalleProductList; let rowIndex = index;">
+                      <td contenteditable="false" style="width: 69em;">
+                        <input class="form-control" type="text" name="" [(ngModel)]="item.loteNum" id="">
+                      </td>
+                      <td style="width:30cm;">
+
+                      </td>
+
+                      <td contenteditable="false" style="width:227px;">
+
+                        <div class="double">
+                          <div class="updouble"><span> {{item?.item | titlecase}}</span></div>
+                          <!-- <div class="subdouble"><span></span></div> --> 
+                        </div>
+                      
+                      </td>
+                      <!-- <td></td>
+                      <td></td> -->
+                      <td style="width:37cm;">
+
+                        <select class="form-control" required  (change)="addDetalle(item, $event.target.value)" [(ngModel)]="item.StorageArea" 
+                        (input)="onInputChangedStorage($event.target.value, rowIndex, 'StorageArea')">
+                          <option [value]="option?.idAlmacen" *ngFor="let option of reservarbodega">
+                            {{ option?.bodega }} - {{ option?.almacen }}
+                          </option>
+                        </select>
+                        
+                          
+                      </td>
+                     
+                      <td contenteditable="false" style="width: 17cm; text-align: end;">
+                        <input class="form-control" type="number" [value]="item?.Quantity" name="" id=""
+                          (input)="onInputChanged($event.target.value, rowIndex, 'Quantity')" (change)="validar(item)">
+                      </td>
+                      <td style="width:100px; text-align: center;">{{item?.cantidad | number}}</td>
+                      <td style="width:100px; text-align: center;">{{item?.reserva | number}}</td>
+                      <td style="width:100px; text-align: center;">{{item?.transito | number}}</td>
+                      <td contenteditable="false" style="width:100px; text-align: end;">
+                        {{item.valorUnitario | currency }}
+                      </td>
+                      <td contenteditable="false" style="width:100px; text-align: end;">
+                        {{item.totalPrecio | currency}}
+                      </td>
+                      <!-- <td contenteditable="false" style="width:227px;">{{item?.origen | titlecase}}</td> -->
+                      <td style="text-align:center; width:227px;">
+                        <!-- <a *ngIf="item.editable" (click)="addDetalle(item)" title="Active Form" style="cursor: pointer;"><i
+                              class="mdi mdi-table-edit"></i>
+                          </a>&nbsp; -->
+                        <a title="Delete Detail" (click)="deleteArticulo(rowIndex)" style="cursor: pointer;">
+                          <i class="fa fa-trash"></i></a>
+                        &nbsp;
+                        <!-- <a *ngIf="!item.editable" title="Save Detail" (click)="validarItemsEditable(valuedContador)"  style="cursor: pointer;">
+                              <i class="fa fa-save"></i></a> -->
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="filterModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width: 112%;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Filter</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search ..." [(ngModel)]="articSearch"
+                    (change)="filter()">
+                  <div class="input-group-append">
+                    <!-- <button *ngIf="searclist" class="btn btn-outline-secondary" (click)="search($event)" style="pointer-events:visible;">Search
+                      <i class="fa fa-search"></i></button> -->
+                    <button *ngIf="Activartodos" class="btn btn-outline-secondary" (click)="activar()"
+                      style="pointer-events:visible; color: black" title="Return List">
+                      show all <i class="fa fa-eye"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              
+
+              <tr class="titulosTabla">
+
+                
+                <!-- <th *ngFor="let column of columns" scope="col" [hidden]="!column.show">{{column.name}}</th> -->
+                <th scope="col" style="font-weight: 270;" *ngIf='Warehouse'>Origin
+                  <a (click)="inactivar('Warehouse')">
+                    <i class="fa fa-eye-slash"></i>
+                  </a>
+
+                </th>
+                <!-- <th scope="col" style="font-weight: 270;">Origin <a ><i class="fa fa-eye-slash" *ngIf='!item.inputshow'></i></a></th> -->
+                <th scope="col" style="font-weight: 270;  width: 112px;" *ngIf='Name'>Name <a
+                    (click)="inactivar('Name')"><i class="fa fa-eye-slash"></i></a></th>
+                <!-- <th scope="col" style="font-weight: 270;">Varietal <a ><i class="fa fa-eye-slash" *ngIf='!item.inputshow'></i></a></th>
+                    <th scope="col" style="font-weight: 270;">Process <a ><i class="fa fa-eye-slash" *ngIf='!item.inputshow'></i></a></th> -->
+                <th scope="col" style="font-weight: 270;" *ngIf='Class'>Varietal <a (click)="inactivar('Class')"><i
+                      class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 270;" *ngIf='Lot'>Process <a (click)="inactivar('Lot')"><i
+                      class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 270;" *ngIf='Available'>Class <a
+                    (click)="inactivar('Available')"><i class="fa fa-eye-slash"></i></a></th>
+                <th scope="col" style="font-weight: 270;" >Brand</th>
+                <th scope="col" style="font-weight: 270; text-align: center;">{{'Action' | translate}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let item of articles">
+                <td *ngIf='Warehouse'>{{item?.Origen | titlecase}}</td>
+                
+                <td *ngIf='Name'>
+                  <div class="double">
+                    <div class="updouble"><span> {{item?.item | titlecase}}</span>per
+                    </div>
+                    <!-- <div class="subdouble"><span></span></div> -->
+                  </div>
+                </td>
+                <td *ngIf='Class'>{{item?.Variedad | titlecase}}</td>
+                <td *ngIf='Lot'>{{item?.ProcesoItem | titlecase}}</td>
+                <td *ngIf='Available'>{{item?.classification | titlecase}}</td>
+                <td>
+                  {{item?.Marca | titlecase}}        
+                </td>
+                
+                <td style="text-align:center">
+
+                  <div class="nb-checkbox">
+                    <label class="customised-control">
+
+                      <input class="customised-control-input" type="checkbox" value="{{item.IdItem}}"
+                        (change)="checkPush($event)">
+
+                      <span class="customised-control-indicator"></span>
+                      <span class="customised-control-description"></span>
+                    </label>
+                  </div>
+                 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="AddProduct()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

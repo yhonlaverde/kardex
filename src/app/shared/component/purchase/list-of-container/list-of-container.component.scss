@@ -1,0 +1,156 @@
+::ng-deep card-no-border .card {
+    border: 0px;
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin-bottom: 0px;
+  }
+  
+  ::ng-deep card-body {
+    flex: 1 1 auto;
+    min-height: 0px;
+    padding: 0.25rem;
+  }
+  
+  .titulosTabla {
+    background-color: #438eb9;
+    color: cornsilk;
+  }
+  
+  .modal-header {
+    background-color: #438eb9;
+  
+  }
+  
+  .modal-title {
+    color: aliceblue;
+  }
+  
+  tr th {
+    text-align: center;
+  }
+  .titulo {
+    display: flex;
+    align-items: baseline;
+    align-content: center;
+    padding: 10px;
+  }
+
+  h6 {
+    padding-left: 7px;
+    font-size: 16px;
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    color: #73879c
+  }
+
+  .taggues {
+    display: flex !important;
+    justify-content: center !important;
+    position: absolute;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 14px;
+    margin: 5px;
+    line-height: 1.5;
+    border-radius: 3px;
+    margin-top: 18px;
+    color: #fff;
+    
+    }
+  
+  .tag {
+    display: flex !important;
+    justify-content: center !important;
+    padding: 5px;
+    font-size: 14px;
+    margin: 5px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #fff;
+  
+  }
+
+  .agencia {
+    display: flex;
+    align-items: baseline;
+    align-content: center;
+    margin: 10px;
+    margin-right: 1.25rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    margin-left: auto;
+
+    h6 {
+      color: #73879c;
+      font-size: 16px;
+      padding-right: 1.25rem;
+      padding-left: 1.25rem;
+    }
+
+    span {
+      background-color: #438eb9;
+      font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+      color: #fff;
+      padding-right: 10px;
+      padding-left: 10px;
+      border-radius: 3px;
+    }
+
+  }
+
+
+  
+  .ACTIVO, .APROBADO {
+    background-color: #99c256;
+  }
+ 
+  .INACTIVO, .ANULADO {
+    background-color: #a94442;
+    ;
+  }
+
+  .TRANSITO{
+    background-color: #438eb9;
+  }
+  
+  .PENDIENTE,
+  .REMISION,
+  .BORRADOR,
+  .Procesando {
+    background-color: #f59c03;
+  }
+  
+  .flex {
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+  
+  .card-body {
+    -ms-flex: 1 1 auto;
+    flex: 0 0 auto;
+    /* padding: 1.1rem; */
+    padding: 6px 12px 8px 17px;
+  }
+
+  .card {
+    margin: 0rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-bodys {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+
+  }
+
+
+  .card-header {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+  }

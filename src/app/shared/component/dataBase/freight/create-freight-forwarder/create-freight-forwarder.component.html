@@ -1,0 +1,163 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <ngx-spinner bdColor = "rgba(255,254,254,0.98)" size = "medium" color = "rgba(6,84,233,0.99)" type = "ball-atom" [fullScreen] = "false"><p style="color: black" > Loading... </p></ngx-spinner>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <label for="">Freight Forwarder Name</label>
+        <input [(ngModel)]="descripcion" class="form-control" type="text" name="postCode" id="postCode"   maxlength="200" required>
+        <div  *ngIf="descripcion">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3"><span  class="caracter">{{descripcion.length}}/ 200</span></div>
+      </div>
+        <a *ngIf="!descripcion" class="validacion">
+          <i class="fa fa-info-circle"></i> Required field
+        </a>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="">{{'Address' | translate}} 1</label>
+            <input [(ngModel)]="calleuno" class="form-control" autocomplete="false" 
+               maxlength="200" type="text" name="street1" id="street1" (input)="onInputChanged($event.target.value)" required>
+            <div *ngIf="calleuno">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3"><span  class="caracter">{{calleuno.length}}/ 200</span></div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Address' | translate}} 2</label>
+            <input [(ngModel)]="calledos" class="form-control" maxlength="200" (input)="onInputChanged($event.target.value)"  autocomplete="false" type="text" name="street" id="street" required>
+            <div *ngIf="calledos">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3"><span  class="caracter" >{{calledos.length}}/ 200</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-6">
+            <label for="">Enter Post Code, suburb or countrie</label>
+            <ng-select [isOpen]='open' [(ngModel)]="postCode" (change)="infoCity(postCode)"
+              placeholder="Enter 3 or more characters" [loading]="loading" [virtualScroll]="true"
+              (scroll)="onScroll($event)" (scrollToEnd)="onScrollToEnd()" (keyup.enter)="customSearchFn($event)">
+              <ng-option *ngFor="let item of codigoPostalBuffer" [value]="item.idCodigoPostal">
+                <div *ngIf="mostrarSelect">
+                  {{item.codigo}} --
+                  {{item.descripcion}} <br />
+                  <small>{{ item?.ciudad | titlecase}} --
+                    {{ item?.pais | titlecase}}</small>
+                </div>
+                <div *ngIf="mostrarcodigo">
+                  {{item.codigo}}
+                </div>
+              </ng-option>
+            </ng-select>
+            <a *ngIf="!postCode" class="validacion">
+              <i class="fa fa-info-circle"></i> Required field
+            </a>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Suburb</label>
+            <input type="text" class="form-control" [(ngModel)]="suburb" readonly>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-sm-6">
+
+          <label for="">Enter City</label>
+              <ng-select [items]="citieslist" bindLabel="descripcion" bindValue="idCiudad" [(ngModel)]="nameCiudad"
+                (change)="infoCiudad(nameCiudad)">
+                <ng-template ng-option-tmp let-item="item">
+                  {{item.descripcion}} <br />
+                  <small>{{item?.regionEstado}}</small>
+                </ng-template>
+              </ng-select>
+        
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <label for="">State</label>
+        <input class="form-control" type="text" name="state" id="state" [(ngModel)]="state" readonly>
+      </div>
+
+      <div class="col-sm-6">
+        <label for="">{{'Country' | translate}}</label>
+        <input type="text" class="form-control" [(ngModel)]="countryName" readonly>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <label for="">{{'Contact' | translate}}</label>
+        <input [(ngModel)]="contac" class="form-control" type="text" name="contac" id="contac"  maxlength="30" required>
+        <div *ngIf="contac">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3"><span  class="caracter" >{{contac.length}}/ 30</span></div>
+      </div>
+      </div>
+      <div class="col-sm-6">
+        <label for="">{{'Phone' | translate}}</label>
+        <input [(ngModel)]="phone" class="form-control" type="text" name="phone" id="phone" maxlength="30" required>
+        <div *ngIf="phone">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3"><span  class="caracter" >{{phone.length}}/ 30</span></div>
+      </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-4">
+        <label for="">Email Customer Service</label>
+        <input [(ngModel)]="emailCustomerService" class="form-control" type="email"  (change)="separateEmail($event)" name="emailCustomer" maxlength="500"
+          id="emailCustomer"  ngModel #emailref1="ngModel" multiple
+          required>
+          <div *ngIf="emailCustomerService">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3"><span  class="caracter" >{{emailCustomerService.length}}/ 500</span></div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <label for="">Email Operator</label>
+        <input [(ngModel)]="emailOperator" class="form-control"  (change)="separateEmail($event)" type="email" name="emailOperator" maxlength="500" id="emailOperator"
+          required  ngModel #emailref2="ngModel" multiple>
+          <div *ngIf="phone">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3"><span  class="caracter" >{{emailOperator.length}}/ 500</span></div>
+        </div>
+      
+      </div>
+      <div class="col-sm-4">
+        <label for="">Email Accounting</label>
+        <input [(ngModel)]="emailAccounting" class="form-control" (change)="separateEmail($event)" type="email" maxlength="500" name="emailAccounting"
+          id="emailAccounting" required ngModel #emailref3="ngModel" multiple>
+          <div *ngIf="emailAccounting">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3"><span  class="caracter" >{{emailAccounting.length}}/ 500</span></div>
+        </div>
+         
+      </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            <label for="">Note</label>
+            <textarea name="" Class="form-control" [(ngModel)]="note" maxlength="200"> </textarea>
+            <div *ngIf="note">
+              <div class="col-sm-9"></div>
+              <div class="col-sm-3"><span  class="caracter" >{{note.length}}/ 200</span></div>
+          </div>
+        </div>
+    </div>
+   
+  </div>
+</div>

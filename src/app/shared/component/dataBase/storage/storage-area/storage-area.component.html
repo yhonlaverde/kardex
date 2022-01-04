@@ -1,0 +1,405 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="articSearch"
+            placeholder="Search for Description, code, contact" aria-label="Recipient's username"
+            aria-describedby="button-addon2" (keyup.enter)="search($event)">
+          <div class="input-group-append">
+            <!-- <button *ngIf="searclist" class="btn btn-outline-secondary" (click)="search($event)" style="pointer-events:visible;">Search
+              <i class="fa fa-search"></i></button> -->
+              <button *ngIf="returnList" class="btn btn-outline-secondary" (click)="limpiar()"
+              style="pointer-events:visible;" title="Return List">
+              Back to the List
+              <i class="fa fa-undo"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr class="titulosTabla">
+            <th>{{'Code' | translate}}</th>
+            <th>{{'Description' | translate}}</th>
+            <th>{{'Contact' | translate}}</th>
+            <th>{{'Email' | translate}}</th>
+            <th>{{'Status' | translate}}</th>
+            <th>{{'Action' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <h6 *ngIf="mostrar">Not Data found</h6>
+          <tr style="cursor: pointer; width:100%;"
+            *ngFor="let item of almacenListSearch | paginate: { itemsPerPage: itemsPages, currentPage: pagination }" (dblclick)="editar(item.idAlmacen)">
+            <td>{{item.codigo}}</td>
+            <td>{{item.descripcion | titlecase }}</td>
+            <td>{{item.contacto | titlecase }}</td>
+            <td><span>
+                <p> <b style="color: grey;">{{'User mail' | translate}} :</b> {{item.correoUsuario}}</p>
+                <p> <b style="color: grey;">{{'User Operator' | translate}}:</b> {{item.correoOperador}}</p>
+              </span>
+            </td>
+            <td *ngIf="item.estado == 1"> <a class="tag" style="background-color: #99c256; width: 70%; margin-left: auto; margin-right: auto; color: white;"> ACTIVE </a></td>
+            <td *ngIf="item.estado == 0" > <a class="tag" style="background-color: #a94442; ; width: 70%; margin-left: auto; margin-right: auto;  color: white;">INACTIVE </a> </td>
+            <td style="text-align: center">
+              <a (click)="editar(item.idAlmacen)">
+                <i class="mdi mdi-table-edit"></i>
+              </a>
+              &nbsp;
+              <a (click)="borrar(item)">
+                <i class="mdi mdi-delete-circle"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-sm-6">
+          <pagination-controls (pageChange)="pagination = $event"></pagination-controls>
+        </div>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-7"></div>
+            <div class="col-sm-3"><h6>Items For Page</h6></div>
+            <div class="col-sm-2">
+              <select name="" id="" class="form-control" [(ngModel)]="itemsPages">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="75">75</option>
+                <option value="100">100 </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{'Add Storage area' | translate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Code' | translate}}</label>
+            <input [(ngModel)]="code" class="form-control" type="text" name="code" id="code" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Description' | translate}}</label>
+            <input [(ngModel)]="description" class="form-control" type="text" name="description" id="description"
+              required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Contact' | translate}}</label>
+            <input [(ngModel)]="contact" class="form-control" type="text" name="contact" id="contact" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Phone' | translate}}</label>
+            <input [(ngModel)]="phone" class="form-control" type="text" name="phone" id="phone" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'User mail' | translate}}</label>
+            <input [(ngModel)]="userMail" class="form-control" type="text" name="userMail" id="userMail"
+              pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref1="ngModel" required>
+              <div *ngIf="emailref1.errors &&(emailref1.touched || emailref1.dirty)" class="aler alert-danger">
+                <div [hidden]="!emailref1.errors?.pattern">
+                  The email is not valid
+                </div>
+              </div>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'User Operator' | translate}}</label>
+            <input [(ngModel)]="userOperator" class="form-control" type="text" name="userOperator" id="userOperator"
+              required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref="ngModel">
+              <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class="aler alert-danger">
+                <div [hidden]="!emailref.errors?.pattern">
+                  The email is not valid
+                </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-6">
+                <label for="">Enter Post Code, suburb or countrie</label>
+                <ng-select 
+                [isOpen]='open' 
+                [(ngModel)]="postCode" 	
+                (change)="infoCity(postCode)"
+                placeholder="Enter 3 or more characters"
+                [loading]="loading"
+                [virtualScroll]="true"
+                (scroll)="onScroll($event)"
+               (scrollToEnd)="onScrollToEnd()"
+               (keyup.enter)="customSearchFn($event)" >
+                  <ng-option *ngFor="let item of codigoPostalBuffer" [value]="item.idCodigoPostal">
+                   <div *ngIf="mostrarSelect">
+                    {{item.codigo}} --
+                    {{item.descripcion}} <br />
+                    <small>{{ item?.ciudad | titlecase}} --
+                      {{ item?.pais | titlecase}}</small>
+                   </div>
+                   <div *ngIf="mostrarcodigo">
+                    {{item.codigo}}
+                   </div>
+                  </ng-option>
+                </ng-select>
+                <a *ngIf="!postCode" class="validacion">
+                  <i class="fa fa-info-circle"></i> Required field 
+                </a>
+              </div>
+              <div class="col-sm-6">
+                <label for="">Suburb</label>
+                <input type="text" class="form-control" [(ngModel)]="suburb">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="">Enter City</label>
+                <ng-select [items]="citieslist" bindLabel="descripcion"  bindValue="idCiudad" [(ngModel)]="nameCiudad" 
+                (change)="infoCiudad(nameCiudad)">
+                  <ng-template ng-option-tmp let-item="item">
+                    {{item.descripcion}} <br />
+                    <small>{{item?.regionEstado}}</small>
+                  </ng-template>
+                </ng-select>
+                <a *ngIf="!nameCiudad" class="validacion">
+                  <i class="fa fa-info-circle"></i> Required field 
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">State</label>
+            <input class="form-control" type="text" name="state" id="state" [(ngModel)]="state" readonly>
+          </div>
+
+          <div class="col-sm-6">
+            <label for="">{{'Country' | translate}}</label>
+            <input type="text" class="form-control" [(ngModel)]="countryName" readonly>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Warehouse' | translate}}</label>
+            <select class="form-control" required [(ngModel)]="winierie">
+              <option [value]="option?.idBodega" *ngFor="let option of bodegas">
+                {{ option?.descripcion }}
+              </option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Status</label>
+            <select name="" id="" [(ngModel)]="estado" class="form-control" required>
+            
+              <option value="1">ACTIVE</option>
+              <option value="0">INACTIVE</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">{{'Observation' | translate}}</label>
+            <textarea [(ngModel)]="observation" name="observation" id="observation" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="SavewareHouse()">{{'Save' | translate}}</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editMark" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{'Edit Storage area' | translate}}</h5>
+        <button type="button" class="close" (click)="cancel()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Code' | translate}}</label>
+            <input [(ngModel)]="code" class="form-control" type="text" name="code" id="code" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Description' | translate}}</label>
+            <input [(ngModel)]="description" class="form-control" type="text" name="description" id="description"
+              required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Contact' | translate}}</label>
+            <input [(ngModel)]="contact" class="form-control" type="text" name="contact" id="contact" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'Phone' | translate}}</label>
+            <input [(ngModel)]="phone" class="form-control" type="text" name="phone" id="phone" required>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'User mail' | translate}}</label>
+            <input [(ngModel)]="userMail" class="form-control" type="text" name="userMail" id="userMail"
+              pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref1="ngModel" required>
+              <div *ngIf="emailref1.errors &&(emailref1.touched || emailref1.dirty)" class="aler alert-danger">
+                <div [hidden]="!emailref1.errors?.pattern">
+                  The email is not valid
+                </div>
+              </div>
+          </div>
+          <div class="col-sm-6">
+            <label for="">{{'User Operator' | translate}}</label>
+            <input [(ngModel)]="userOperator" class="form-control" type="text" name="userOperator" id="userOperator"
+              required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" ngModel #emailref="ngModel">
+              <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class="aler alert-danger">
+                <div [hidden]="!emailref.errors?.pattern">
+                  The email is not valid
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-6">
+                <label for="">Enter Post Code, suburb or countrie</label>
+                <ng-select 
+                [isOpen]='open' 
+                [(ngModel)]="postCode" 	
+                (change)="infoCity(postCode)"
+                placeholder="Enter 3 or more characters"
+                [loading]="loading"
+                [virtualScroll]="true"
+                (scroll)="onScroll($event)"
+               (scrollToEnd)="onScrollToEnd()"
+               (keyup.enter)="customSearchFn($event)" >
+                  <ng-option *ngFor="let item of codigoPostalBuffer" [value]="item.idCodigoPostal">
+                   <div *ngIf="mostrarSelect">
+                    {{item.codigo}} --
+                    {{item.descripcion}} <br />
+                    <small>{{ item?.ciudad | titlecase}} --
+                      {{ item?.pais | titlecase}}</small>
+                   </div>
+                   <div *ngIf="mostrarcodigo">
+                    {{item.codigo}}
+                   </div>
+                  </ng-option>
+                </ng-select>
+                <a *ngIf="!postCode" class="validacion">
+                  <i class="fa fa-info-circle"></i> Required field 
+                </a>
+              </div>
+              <div class="col-sm-6">
+                <label for="">Suburb</label>
+                <input type="text" class="form-control" [(ngModel)]="suburb">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="">Enter City</label>
+                <ng-select [items]="citieslist" bindLabel="descripcion"  bindValue="idCiudad" [(ngModel)]="nameCiudad" 
+                (change)="infoCiudad(nameCiudad)">
+                  <ng-template ng-option-tmp let-item="item">
+                    {{item.descripcion}} <br />
+                    <small>{{item?.regionEstado}}</small>
+                  </ng-template>
+                </ng-select>
+                <a *ngIf="!nameCiudad" class="validacion">
+                  <i class="fa fa-info-circle"></i> Required field 
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">State</label>
+            <input class="form-control" type="text" name="state" id="state" [(ngModel)]="state" readonly>
+          </div>
+
+          <div class="col-sm-6">
+            <label for="">{{'Country' | translate}}</label>
+            <input type="text" class="form-control" [(ngModel)]="countryName" readonly>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-sm-6">
+            <label for="">{{'Warehouse' | translate}}</label>
+            <select class="form-control" required [(ngModel)]="winierie">
+              <option [value]="option?.idBodega" *ngFor="let option of bodegas">
+                {{ option?.descripcion }}
+              </option>
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <label for="">Status</label>
+            <select name="" id="" [(ngModel)]="estado" class="form-control" required>
+            
+              <option value="1">ACTIVE</option>
+              <option value="0">INACTIVE</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">{{'Observation' | translate}}</label>
+            <textarea [(ngModel)]="observation" name="observation" id="observation" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="EditWareHouse(id)">{{'Edit' | translate}}</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()" data-dismiss="modal">{{'Close' |
+          translate}}</button>
+      </div>
+    </div>
+  </div>
+</div> -->

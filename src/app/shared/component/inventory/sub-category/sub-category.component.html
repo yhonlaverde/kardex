@@ -1,0 +1,109 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <input type="text" class="form-control" placeholder="Searh for Description ..." [(ngModel)]="articSearch"
+          (keyup.enter)="search($event)">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr class="titulosTabla">
+            <th>{{'Code' | translate}}</th>
+            <th>{{'Description' | translate}}</th>
+            <th>{{'Actions' | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <h6 *ngIf="mostrar">Not Data found</h6>
+          <tr style="cursor: pointer; width:100%;" *ngFor="let item of subList">
+            <td>{{item.codigo}}</td>
+            <td>{{item.descripcion | titlecase }}</td>
+            <td style="text-align: center"><a (click)="editar(item)"><i class="mdi mdi-table-edit"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{'Add SubCategory' | translate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">{{'Code' | translate}}</label>
+            <input [(ngModel)]="code" class="form-control" type="text" name="code" id="code" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">{{'Description' | translate}}</label>
+            <input [(ngModel)]="descripcion" class="form-control" type="text" name="descripcion" id="descripcion"
+              required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="SaveSub()">{{'Save' | translate}}</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editMark" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{'Edit SubCategory' | translate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">{{'Code' | translate}}</label>
+            <input [(ngModel)]="code" class="form-control" type="text" name="code" id="code" required>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <label for="">{{'Description' | translate}}</label>
+            <input [(ngModel)]="descripcion" class="form-control" type="text" name="descripcion" id="descripcion"
+              required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="EditSub(id)">{{'Edit' | translate}}</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+.titulosTabla {
+    background-color: #438eb9;
+    color: cornsilk;
+  }
+  
+  .modal-header {
+    background-color: #438eb9;
+  
+  }
+  
+  .modal-title {
+    color: aliceblue;
+  }
+  
+  tr th {
+    text-align: center;
+  }
+  
+  .flex {
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+  
+  
+  .tag {
+    display: flex !important;
+    justify-content: center !important;
+    padding: 5px;
+    font-size: 14px;
+    margin: 5px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #fff;
+  
+  }
+  
+  .card-body {
+    -ms-flex: 1 1 auto;
+    flex: 0 0 auto;
+    /* padding: 1.1rem; */
+    padding: 6px 12px 8px 17px;
+  }
+  
+  .validacion{
+     color:red !important;
+  }
+
+  .caracter{
+    font-family: cursive;
+    font-size: 12px;
+    position: absolute;
+    font-style: oblique;
+    color: #79879acf;
+
+
+  }
+  
+  

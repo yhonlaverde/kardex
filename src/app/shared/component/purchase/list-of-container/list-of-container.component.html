@@ -1,0 +1,111 @@
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="card mb-3">
+      <div class="">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search Enter ..."
+                aria-label="Recipient's username" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button *ngIf="returnList" class="btn btn-outline-secondary" style="pointer-events:visible;"
+                  title="Return List">
+                  Back to the List
+                  <i class="fa fa-undo"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover" style="width: 100%;">
+        <thead>
+          <tr class="titulosTabla">
+            <th scope="col">Container #</th>
+            <th scope="col">Confinet Container</th>
+            <th scope="col">Contract #</th>
+            <th scope="col">Supplier</th>
+            <th scope="col">Departure Date</th>
+            <th scope="col">Arrival Date</th>
+            <th scope="col">Quarantine</th>
+            <th scope="col">Border Hold</th>
+            <th scope="col">Gross Weight</th>
+            <th>Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listInventory | paginate: { itemsPerPage: itemsPages, currentPage: pagination}" (dblclick)="editar(item)">
+            <td>{{item?.Contenedor | titlecase}}</td>
+            <td>{{item?.ConfinetContainer | titlecase}}</td>
+            <td>{{item?.Contrato}}</td>
+            <td>{{item?.Proveedor | titlecase}}</td>
+            <td>{{item?.DepartureDate}}</td>
+            <td>{{item?.ArrivalDate}}</td>
+            <td>{{item?.Cuarentena | titlecase}}</td>
+            <td>{{item?.ArrivalPort}}</td>
+            <td>{{item?.BorderHold | titlecase}}</td>
+            <td *ngIf="item.Estado == 'APROBADO'" >
+              <a class="tag"  [class]="item?.Estado" style="width: 95%; margin-left: auto; margin-right: auto; color: white;">
+                Approved 
+              </a>              
+            </td>
+            <td *ngIf="item.Estado == 'PENDIENTE'" >
+              <a class="tag"  [class]="item?.Estado" style="width: 85%; margin-left: auto; margin-right: auto; color: white;">
+                Pending
+              </a>              
+            </td>
+            <td *ngIf="item.Estado == 'ANULADO'" >
+              <a class="tag"  [class]="item?.Estado" style="width: 95%; margin-left: auto; margin-right: auto; color: white;">
+                Annulled
+              </a>              
+            </td>
+            <td *ngIf="item.Estado == 'TRANSITO'" >
+              <a class="tag"  [class]="item?.Estado" style="width: 85%; margin-left: auto; margin-right: auto; color: white;">
+               Transit 
+              </a>              
+            </td>
+            <td style="text-align: center">
+              <a (click)="editar(item)">
+                <i class="mdi mdi-table-edit"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-sm-6">
+          <pagination-controls (pageChange)="pagination = $event"></pagination-controls>
+        </div>
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-7"></div>
+            <div class="col-sm-3">
+              <h6>Items For Page</h6>
+            </div>
+            <div class="col-sm-2">
+              <select name="" id="" class="form-control" [(ngModel)]="itemsPages">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="75">75</option>
+                <option value="100">100 </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

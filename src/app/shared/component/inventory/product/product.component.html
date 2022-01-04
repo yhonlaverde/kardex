@@ -1,0 +1,361 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex">
+      <app-actionbutton [actions]="action" (actionexecuted)="actionExecuted($event)">
+      </app-actionbutton>
+    </div>
+  </div>
+  <div class="card">
+    <ngx-spinner bdColor = "rgba(255,254,254,0.98)" size = "medium" color = "rgba(6,84,233,0.99)" type = "ball-atom" [fullScreen] = "true"><p style="color: black" > Loading... </p></ngx-spinner>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <label for="">SKU</label>
+          <input [(ngModel)]="sku" class="form-control" required type="text" maxlength="30" name="sku" id="sku" />
+          <div class="row" *ngIf="sku">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3" class="caracter"> <span class="caracter">{{sku.length}}/30</span>
+            </div>
+          </div>
+          <a *ngIf="!sku" class="validacion">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </div>
+        <div class="col-sm-6">
+          <label for="">{{ "Name" | translate }}</label>
+          <input [(ngModel)]="descripcion" class="form-control" maxlength="200" required type="text" name="descripcion"
+            id="descripcion" />
+          <div class="row" *ngIf="descripcion">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3" class="caracter"> <span class="caracter">{{descripcion.length}}/200</span>
+            </div>
+          </div>
+          <a *ngIf="!descripcion" class="validacion">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </div>
+      </div>
+      <div class="row mb-3">
+
+        <div class="col-sm-4">
+          <label for="">Process</label>
+          <ng-select [items]="proccess" bindLabel="descripcion" bindValue="idProcesoItem" [(ngModel)]="process">
+            <ng-template ng-option-tmp let-item="item">
+              {{ item?.codigo }} <br />
+              <small>{{ item?.descripcion }}</small>
+            </ng-template>
+          </ng-select>
+          <a *ngIf="!process" class="validacion">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </div>
+        <div class="col-sm-4">
+          <label for="">{{ "Mark" | translate }}</label>
+          <ng-select [items]="Marca" bindLabel="descripcion" bindValue="idMarca" [(ngModel)]="marca">
+            <ng-template ng-option-tmp let-item="item">
+              {{ item?.descripcion }} <br />
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="col-sm-4">
+          <label for="">EAN</label>
+          <input [(ngModel)]="ean" class="form-control" required type="text" name="ean" maxlength="200" id="ean" />
+          <div class="row" *ngIf="ean">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3" class="caracter"> <span class="caracter">{{ean.length}}/200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <label for="">{{ "Classification" | translate }}</label>
+          <ng-select [items]="Clasificacion" bindLabel="descripcion" bindValue="idClasificacion"
+            [(ngModel)]="clasificacion">
+            <ng-template ng-option-tmp let-item="item">
+              {{ item?.descripcion }} <br />
+            </ng-template>
+          </ng-select>
+          <a *ngIf="!clasificacion" class="validacion">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </div>
+        <div class="col-sm-6">
+          <label for="">{{ "Packaging" | translate }}</label>
+          <div class="row">
+            <div class="col-sm-11">
+              <ng-select *ngIf="mostrarselc == true" required [multiple]="true" [(ngModel)]="embalaje">
+                <ng-option [value]="option" *ngFor="let option of unidad" style="background-color: beige">
+                  {{ option?.descripcion }}</ng-option>
+              </ng-select>
+              <ng-select *ngIf="mostrarselc == false" required [multiple]="true" [(ngModel)]="embalaje">
+                <ng-option [value]="option.idUnidadEmpaque" *ngFor="let option of unidad"
+                  style="background-color: beige">
+                  {{ option?.descripcion }}</ng-option>
+              </ng-select>
+              <a *ngIf="!embalaje" class="validacion">
+                <i class="fa fa-info-circle"></i> Required field
+              </a>
+            </div>
+            <div class="col-sm-1">
+              <button (click)="detalle()" title="Detail Packaging">
+                <i class="fa fa-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <label for="">{{ "Score" | translate }}</label>
+          <input [(ngModel)]="score" class="form-control" required type="number" name="score" maxlength="200"
+            id="score" />
+        </div>
+        <div class="col-sm-6">
+          <label for="">Cupping notes</label>
+          <input class="form-control" required type="text" name="cuppingNotes" id="cuppingNotes"
+            [(ngModel)]="cuppingNote" />
+          <div class="row" *ngIf="cuppingNote">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3" class="caracter"> <span class="caracter">{{cuppingNote.length}}/200</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <label for="">{{ "Origin" | translate }}</label>
+          <ng-select [items]="originlist" bindLabel="descripcion" bindValue="idOrigenItem" [(ngModel)]="origin">
+            <ng-template ng-option-tmp let-item="item">
+              {{ item?.descripcion }} <br />
+            </ng-template>
+          </ng-select>
+          <a *ngIf="!origin" class="validacion">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </div>
+        <div class="col-sm-6">
+          <label for="">{{ "Varietal" | translate }}</label>
+          <ng-select [items]="subessearch" bindLabel="descripcion" bindValue="idVariedadItem" [(ngModel)]="varietal">
+            <ng-template ng-option-tmp let-item="item">
+              {{ item?.descripcion }} <br />
+            </ng-template>
+          </ng-select>
+          <a *ngIf="!varietal" class="validacion">
+            <i class="fa fa-info-circle"></i> Required field
+          </a>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <label for="">Select to Image</label>
+          <div class="fileupload fileupload-new" data-provides="fileupload">
+            <div class="row">
+              <div class="col-sm-9">
+                <span class="btn btn-default btn-file"><span class="fileupload-new"><i
+                      class="mdi mdi-upload"></i></span>
+                  <span class="fileupload-exists">Change</span><input type="file" multiple
+                    (change)="imgAccordion($event)" /></span>
+                <span class="fileupload-preview" style=" padding-left: 25px;">
+
+
+                  <ul style="padding-left: 108px;  margin-top: -13px;">
+                    <li *ngFor="let file of selectedFiles; let i = index">
+                      <!-- <a href="#">{{file.name}}</a> -->
+                      <img [src]="file.imagen" *ngIf="file.imagen" width="40" height="auto" alt="">
+                      <a *ngIf="file.name" href="{{file.name}}" download="{{file.name}}">{{file.name}}</a> &nbsp; &nbsp;
+                      <button type="button" class="close" data-dismiss="modal" (click)="cerrar(i)">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </li>
+                  </ul>
+                </span>
+              </div>
+              <div class="col-sm-3">
+                <button *ngIf="mostrarSubir" class="btn btn-default" (click)="subirImagenes()">Upload</button>
+              </div>
+            </div>
+
+
+
+
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row mb-3">
+            <div class="col-sm-12">
+              <label for="">Status</label>
+              <select name="" id="" [(ngModel)]="estado" class="form-control" required>
+                <option value=""></option>
+                <option value="1">ACTIVE</option>
+                <option value="0">INACTIVE</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-12">
+          <label for="">Others</label>
+          <textarea [(ngModel)]="observation" name="observation" id="observation" maxlength="500"
+            class="form-control"></textarea>
+          <div class="row" *ngIf="observation">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-3" class="caracter"> <span class="caracter">{{observation.length}}/500</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion" id="accordionExample" data-default="1">
+    <div class="">
+      <div class="card-header collapsed" id="headingThree">
+        <h2 class="mb-0">
+          <div class="row">
+            <div class="col-sm-11">
+              <button class="btn btn-link btn-block text-left collapsed" style="color: white;" type="button"
+                data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Price Detail
+              </button>
+            </div>
+            <div class="col-sm-1">
+              <button class="btn btn-link btn-block text-left collapsed" type="button" (click)="AddListPrice()"
+                data-toggle="collapse" style=" color: white;" data-target="#collapseFour" aria-expanded="false"
+                aria-controls="collapseFour">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </h2>
+      </div>
+      <div id="collapseThree" class="collapse collapse show" aria-labelledby="headingThree"
+        data-parent="#accordionExample">
+        <div class="card-body">
+          <div class="row mb-3" *ngIf="detallesPrecio.length > 0">
+            <div class="col-sm-5">
+              <h6>List Price</h6>
+            </div>
+            <div class="col-sm-5">
+              <h6>Price</h6>
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+          <div *ngFor="let itemprices of detallesPrecio; let i = index">
+            <div class="row mb-3">
+              <div class="col-sm-5">
+                <ng-select [items]="listaPrecio" bindLabel="descripcion" bindValue="idListaPrecio"
+                  [(ngModel)]="itemprices.idListaPrecio">
+                  <ng-template ng-option-tmp let-item="item">
+                    {{ item?.codigo }} <br />
+                    <small>{{ item?.descripcion}}</small>
+                  </ng-template>
+                </ng-select>
+              </div>
+              <div class="col-sm-5">
+                <input class="form-control" required type="number" name="costoUnitario" id="costoUnitario"
+                  [(ngModel)]="itemprices.precio" />
+              </div>
+              <div class="col-sm-2">
+                <a (click)="borrarPricelist(i)"><i class="fa fa-trash fa-2x"></i> </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editMark" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Detail Package</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <table class="table table-hover" *ngIf="MostrarAdd">
+            <thead>
+              <tr class="titulosTabla">
+                <th>{{ "Code" | translate }}</th>
+                <th>{{ "Weight" | translate }}</th>
+                <th>{{ "Length" | translate }}</th>
+                <th>{{ "Width" | translate }}</th>
+                <th>{{ "High" | translate }}</th>
+                <th>{{ "Status" | translate }}</th>
+                <th>{{ "Action" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="cursor: pointer; width: 100%" *ngFor="
+                    let item of embalaje
+                      | paginate: { itemsPerPage: 10, currentPage: pagination }
+                  " (dblclick)="editar(item)">
+                <td>{{ item.descripcion | titlecase }} {{ item.codigo | titlecase }}</td>
+                <td>{{ item.peso }}</td>
+                <td>{{ item.largo }}</td>
+                <td>{{ item.ancho }}</td>
+                <td>{{ item.alto }}</td>
+                <td *ngIf="item.activo == 1" class="tag" style="background-color: #99c256">
+                  ACTIVE
+                </td>
+                <td *ngIf="item.activo == 0" class="tag" style="background-color: #a94442">
+                  INACTIVE
+                </td>
+                <td style="text-align: center">
+                  <a>
+                    <i class="mdi mdi-table-edit"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table table-hover" *ngIf="!MostrarAdd">
+            <thead>
+              <tr class="titulosTabla">
+                <th>{{ "Code" | translate }}</th>
+                <th>{{ "Weight" | translate }}</th>
+                <th>{{ "Length" | translate }}</th>
+                <th>{{ "Width" | translate }}</th>
+                <th>{{ "High" | translate }}</th>
+                <th>{{ "Status" | translate }}</th>
+                <th>{{ "Action" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="cursor: pointer; width: 100%" *ngFor="
+                    let item of embalajeList
+                      | paginate: { itemsPerPage: 10, currentPage: pagination }
+                  " (dblclick)="editar(item)">
+                <td>{{ item.descripcion | titlecase }} {{ item.codigo | titlecase }}</td>
+                <td>{{ item.peso }}</td>
+                <td>{{ item.largo }}</td>
+                <td>{{ item.ancho }}</td>
+                <td>{{ item.alto }}</td>
+                <td *ngIf="item.activo == 1" class="tag" style="background-color: #99c256">
+                  ACTIVE
+                </td>
+                <td *ngIf="item.activo == 0" class="tag" style="background-color: #a94442">
+                  INACTIVE
+                </td>
+                <td style="text-align: center">
+                  <a>
+                    <i class="mdi mdi-table-edit"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls (pageChange)="pagination = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
